@@ -1,2 +1,4 @@
-playwright==1.44.0
+selenium==4.21.0
+webdriver-manager==4.0.1
+beautifulsoup4==4.12.3
 requests==2.32.3
