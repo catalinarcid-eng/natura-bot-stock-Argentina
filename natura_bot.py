@@ -176,13 +176,27 @@ def main():
     new_out_of_stock = []
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+      browser = p.chromium.launch(
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-http2",
+            ]
+        )
         context = browser.new_context(
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
                 "Chrome/124.0.0.0 Safari/537.36"
-            )
+            ),
+            extra_http_headers={
+                "Accept-Language": "es-AR,es;q=0.9",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            },
+            locale="es-AR",
+            viewport={"width": 1280, "height": 800},
         )
         # Página principal para scraping
         main_page = context.new_page()
