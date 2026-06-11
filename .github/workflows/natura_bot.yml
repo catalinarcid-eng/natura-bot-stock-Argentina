@@ -29,7 +29,6 @@ jobs:
 
       # 4. Playwright (solo Chromium para ahorrar espacio)
       - name: Instalar Chromium (Playwright)
-       - name: Instalar dependencias del sistema
         run: sudo apt-get install -y libasound2t64 && python -m playwright install --with-deps chromium
       # 5. Restaurar memoria desde cache (persiste entre runs)
       - name: Restaurar memoria de productos notificados
