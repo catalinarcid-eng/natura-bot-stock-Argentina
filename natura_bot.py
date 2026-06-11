@@ -49,16 +49,22 @@ def marcar_notificado(memoria: dict, codigo: str, nombre: str):
 def enviar_webhook(productos: list):
     if not productos:
         return
-    lineas = ["🚨 *Productos SIN STOCK en Natura Argentina:*\n"]
-    for p in productos:
-        lineas.append(f"• *{p['nombre']}*\n  Código: {p['codigo']}\n  🔗 {p['url']}")
-    payload = {"text": "\n".join(lineas)}
-    try:
-        r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
-        r.raise_for_status()
-        print(f"✅ Webhook enviado: {len(productos)} producto(s).")
-    except Exception as e:
-        print(f"❌ Error webhook: {e}")
+    BLOQUE = 20
+    total_bloques = (len(productos) + BLOQUE - 1) // BLOQUE
+    for i in range(0, len(productos), BLOQUE):
+        bloque = productos[i:i + BLOQUE]
+        num = (i // BLOQUE) + 1
+        lineas = [f"🚨 *Productos SIN STOCK en Natura Argentina* ({num}/{total_bloques}):\n"]
+        for p in bloque:
+            lineas.append(f"• *{p['nombre']}*\n  Código: {p['codigo']}")
+        payload = {"text": "\n".join(lineas)}
+        try:
+            r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
+            r.raise_for_status()
+            print(f"✅ Bloque {num}/{total_bloques} enviado ({len(bloque)} productos).")
+        except Exception as e:
+            print(f"❌ Error bloque {num}: {e}")
+        time.sleep(1)
 
 def enviar_resumen(total: int, nuevos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
