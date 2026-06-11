@@ -3,10 +3,18 @@ import os
 import time
 import requests
 from datetime import datetime, timedelta
-from playwright.sync_api import sync_playwright
 
 # ─── Configuración ───────────────────────────────────────────────────────────
-BASE_URL = "https://www.naturacosmeticos.com.ar/c/todos-productos"
+ACCOUNT = "naturacosmeticos"
+ENVIRONMENT = "vtexcommercestable"
+BASE_API = f"https://{ACCOUNT}.{ENVIRONMENT}.com.br"
+
+# API VTEX Intelligent Search (pública, sin auth)
+SEARCH_API = f"https://{ACCOUNT}.{ENVIRONMENT}.com.br/api/io/_v/api/intelligent-search/product_search/trade_policy/1"
+
+# API VTEX legacy catalog (pública)
+CATALOG_API = f"{BASE_API}/_v/public/products/search"
+
 WEBHOOK_URL = (
     "https://chat.googleapis.com/v1/spaces/AAQAljBv4Y4/messages"
     "?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI"
@@ -15,152 +23,207 @@ WEBHOOK_URL = (
 MEMORY_FILE = "memoria.json"
 MEMORY_TTL_DAYS = 7
 
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
+    "Accept": "application/json",
+    "Accept-Language": "es-AR,es;q=0.9",
+}
 
 # ─── Memoria ─────────────────────────────────────────────────────────────────
 
 def load_memory() -> dict:
-    """Carga la memoria desde el archivo JSON."""
     if not os.path.exists(MEMORY_FILE):
         return {}
     with open(MEMORY_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
 def save_memory(memory: dict):
-    """Guarda la memoria en el archivo JSON."""
     with open(MEMORY_FILE, "w", encoding="utf-8") as f:
         json.dump(memory, f, ensure_ascii=False, indent=2)
 
-
 def clean_old_entries(memory: dict) -> dict:
-    """Elimina entradas con más de 7 días."""
     cutoff = datetime.now() - timedelta(days=MEMORY_TTL_DAYS)
-    cleaned = {
-        code: data
-        for code, data in memory.items()
+    return {
+        code: data for code, data in memory.items()
         if datetime.fromisoformat(data["fecha"]) > cutoff
     }
-    return cleaned
-
 
 def is_already_notified(memory: dict, code: str) -> bool:
     return code in memory
 
-
 def mark_as_notified(memory: dict, code: str, name: str):
-    memory[code] = {
-        "nombre": name,
-        "fecha": datetime.now().isoformat(),
-    }
-
+    memory[code] = {"nombre": name, "fecha": datetime.now().isoformat()}
 
 # ─── Webhook ─────────────────────────────────────────────────────────────────
 
-def send_webhook(products: list[dict]):
-    """Envía mensaje a Google Chat con los productos sin stock."""
+def send_webhook(products: list):
     if not products:
         return
-
-    lines = ["🚨 *Productos SIN STOCK en Natura:*\n"]
+    lines = ["🚨 *Productos SIN STOCK en Natura Argentina:*\n"]
     for p in products:
-        lines.append(f"• *{p['name']}*\n  Código: `{p['code']}`\n  🔗 {p['url']}")
-
-    message = "\n".join(lines)
-
-    payload = {"text": message}
+        lines.append(f"• *{p['name']}*\n  Código: {p['code']}\n  🔗 {p['url']}")
+    payload = {"text": "\n".join(lines)}
     try:
         resp = requests.post(WEBHOOK_URL, json=payload, timeout=15)
         resp.raise_for_status()
         print(f"✅ Webhook enviado con {len(products)} producto(s).")
     except Exception as e:
-        print(f"❌ Error al enviar webhook: {e}")
+        print(f"❌ Error webhook: {e}")
 
-
-def send_heartbeat(total_checked: int, new_out_of_stock: int):
-    """Envía un resumen al finalizar el chequeo."""
+def send_heartbeat(total: int, new_oos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
-    text = (
+    payload = {"text": (
         f"✅ *Chequeo Natura completado* [{now}]\n"
-        f"Productos revisados: {total_checked}\n"
-        f"Nuevos sin stock notificados: {new_out_of_stock}"
-    )
-    payload = {"text": text}
+        f"Productos revisados: {total}\n"
+        f"Nuevos sin stock notificados: {new_oos}"
+    )}
     try:
         resp = requests.post(WEBHOOK_URL, json=payload, timeout=15)
         resp.raise_for_status()
     except Exception as e:
-        print(f"❌ Error al enviar heartbeat: {e}")
+        print(f"❌ Error heartbeat: {e}")
 
+# ─── API VTEX ────────────────────────────────────────────────────────────────
 
-# ─── Scraping ────────────────────────────────────────────────────────────────
+def fetch_all_products_vtex() -> list:
+    """Obtiene todos los productos via API VTEX Catalog."""
+    products = []
+    page_size = 50
+    page = 1
 
-def get_product_code_from_page(page, url: str) -> str:
-    """Visita la ficha de producto y extrae el código NATARG-XXX."""
-    try:
-        page.goto(url, wait_until="domcontentloaded", timeout=30000)
-        page.wait_for_selector("p.text-xs.text-low-emphasis", timeout=10000)
-        elements = page.query_selector_all("p.text-xs.text-low-emphasis")
-        for el in elements:
-            text = el.inner_text().strip()
-            if text.lower().startswith("cod."):
-                return text.replace("cod.", "").strip()
-    except Exception as e:
-        print(f"  ⚠️  No se pudo obtener código de {url}: {e}")
-    return "SIN-CODIGO"
-
-
-def scrape_all_products(page) -> list[dict]:
-    """Carga todos los productos presionando 'explorar más resultados'."""
-    print(f"🌐 Cargando {BASE_URL} ...")
-    page.goto(BASE_URL, wait_until="domcontentloaded", timeout=60000)
-    time.sleep(3)
-
-    # Presionar el botón hasta que desaparezca
-    clicks = 0
+    print("📡 Consultando API VTEX...")
     while True:
+        from_val = (page - 1) * page_size
+        to_val = page * page_size - 1
+
+        url = f"{BASE_API}/api/catalog_system/pub/products/search/"
+        params = {
+            "_from": from_val,
+            "_to": to_val,
+            "fq": "C:/",  # todas las categorías
+        }
+
         try:
-            btn = page.locator("p.text-small.font-medium.lowercase", has_text="explorar más resultados")
-            if btn.count() == 0:
-                print(f"✅ Todos los productos cargados ({clicks} clics).")
-                break
-            btn.first.scroll_into_view_if_needed()
-            btn.first.click()
-            clicks += 1
-            print(f"  → Clic {clicks} en 'explorar más resultados'...")
-            time.sleep(2)
+            resp = requests.get(url, headers=HEADERS, params=params, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
         except Exception as e:
-            print(f"  ⚠️  No se encontró más el botón: {e}")
+            print(f"  ⚠️  Error en página {page}: {e}")
             break
 
-    # Recolectar tarjetas de producto
-    cards = page.query_selector_all("div.rounded-md.bg-white.cursor-pointer")
-    print(f"📦 Productos encontrados en DOM: {len(cards)}")
+        if not data:
+            print(f"✅ Fin de productos en página {page}.")
+            break
 
-    products = []
-    for card in cards:
-        try:
-            # Nombre
-            name_el = card.query_selector("h4.text-wrap")
-            name = name_el.inner_text().strip() if name_el else "Sin nombre"
+        products.extend(data)
+        print(f"  → Página {page}: {len(data)} productos (total: {len(products)})")
 
-            # URL relativa → absoluta
-            link_el = card.query_selector("a[href]")
-            href = link_el.get_attribute("href") if link_el else ""
-            url = f"https://www.naturacosmeticos.com.ar{href}" if href.startswith("/") else href
+        if len(data) < page_size:
+            break
 
-            # ¿Agotado?
-            out_of_stock = card.query_selector("p.text-alert") is not None or \
-                           "producto agotado" in (card.inner_text().lower())
-
-            products.append({
-                "name": name,
-                "url": url,
-                "out_of_stock": out_of_stock,
-            })
-        except Exception as e:
-            print(f"  ⚠️  Error parseando tarjeta: {e}")
+        page += 1
+        time.sleep(0.5)  # respetar rate limits
 
     return products
+
+
+def fetch_products_by_category() -> list:
+    """Alternativa: busca productos por categoría usando Intelligent Search."""
+    products = []
+    page = 0
+    page_size = 50
+
+    print("📡 Consultando API Intelligent Search...")
+    while True:
+        params = {
+            "page": page + 1,
+            "count": page_size,
+            "query": "",
+            "sort": "",
+            "operator": "and",
+            "fuzzy": "0",
+            "leap": "false",
+        }
+        try:
+            resp = requests.get(
+                SEARCH_API,
+                headers={**HEADERS, "x-vtex-language": "es-AR"},
+                params=params,
+                timeout=30
+            )
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            print(f"  ⚠️  Error en página {page+1}: {e}")
+            break
+
+        items = data.get("products", [])
+        if not items:
+            print(f"✅ Fin de productos en página {page+1}.")
+            break
+
+        products.extend(items)
+        print(f"  → Página {page+1}: {len(items)} productos (total: {len(products)})")
+
+        total = data.get("recordsFiltered", 0)
+        if len(products) >= total or len(items) < page_size:
+            break
+
+        page += 1
+        time.sleep(0.3)
+
+    return products
+
+
+def check_stock_catalog(product: dict) -> tuple:
+    """
+    Extrae nombre, código, URL y disponibilidad de un producto VTEX Catalog.
+    Retorna (name, code, url, out_of_stock)
+    """
+    name = product.get("productName", "Sin nombre")
+    ref = product.get("productReference", "")
+    link = product.get("link", "")
+    url = f"https://www.naturacosmeticos.com.ar{link}" if link.startswith("/") else link
+
+    # Código: productReference o productId
+    code = ref if ref else str(product.get("productId", "SIN-CODIGO"))
+
+    # Stock: revisar SKUs
+    out_of_stock = True
+    items = product.get("items", [])
+    for item in items:
+        for seller in item.get("sellers", []):
+            availability = seller.get("commertialOffer", {}).get("AvailableQuantity", 0)
+            if availability and int(availability) > 0:
+                out_of_stock = False
+                break
+        if not out_of_stock:
+            break
+
+    return name, code, url, out_of_stock
+
+
+def check_stock_search(product: dict) -> tuple:
+    """
+    Extrae nombre, código, URL y disponibilidad de un producto Intelligent Search.
+    """
+    name = product.get("productName", "Sin nombre")
+    link = product.get("link", "")
+    url = f"https://www.naturacosmeticos.com.ar{link}" if link.startswith("/") else link
+
+    # Código desde productReference o productId
+    code = product.get("productReference", "") or str(product.get("productId", "SIN-CODIGO"))
+
+    # Stock
+    out_of_stock = True
+    for item in product.get("items", []):
+        for seller in item.get("sellers", []):
+            qty = seller.get("commertialOffer", {}).get("AvailableQuantity", 0)
+            if qty and int(qty) > 0:
+                out_of_stock = False
+                break
+
+    return name, code, url, out_of_stock
 
 
 # ─── Main ────────────────────────────────────────────────────────────────────
@@ -172,76 +235,48 @@ def main():
 
     memory = load_memory()
     memory = clean_old_entries(memory)
-
     new_out_of_stock = []
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-http2",
-            ]
-        )
-        context = browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/124.0.0.0 Safari/537.36"
-            ),
-            extra_http_headers={
-                "Accept-Language": "es-AR,es;q=0.9",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            },
-            locale="es-AR",
-            viewport={"width": 1280, "height": 800},
-        )
-        # Página principal para scraping
-        main_page = context.new_page()
-        products = scrape_all_products(main_page)
+    # Intentar con API Catalog primero
+    raw_products = fetch_all_products_vtex()
 
-        # Página secundaria para fichas de producto
-        detail_page = context.new_page()
+    # Si no funciona, intentar con Intelligent Search
+    if not raw_products:
+        print("⚠️  Catalog API sin resultados, intentando Intelligent Search...")
+        raw_products = fetch_products_by_category()
+        use_search_api = True
+    else:
+        use_search_api = False
 
-        print(f"\n🔍 Analizando {len(products)} productos...")
-        for i, product in enumerate(products, 1):
-            if not product["out_of_stock"]:
-                continue
+    print(f"\n🔍 Analizando {len(raw_products)} productos...")
 
-            print(f"  [{i}/{len(products)}] SIN STOCK: {product['name']}")
+    for i, product in enumerate(raw_products, 1):
+        if use_search_api:
+            name, code, url, out_of_stock = check_stock_search(product)
+        else:
+            name, code, url, out_of_stock = check_stock_catalog(product)
 
-            # Obtener código desde la ficha
-            code = get_product_code_from_page(detail_page, product["url"])
-            print(f"    Código: {code}")
+        if not out_of_stock:
+            continue
 
-            if is_already_notified(memory, code):
-                print(f"    ⏭️  Ya notificado, se omite.")
-                continue
+        print(f"  [{i}/{len(raw_products)}] SIN STOCK: {name} | {code}")
 
-            mark_as_notified(memory, code, product["name"])
-            new_out_of_stock.append({
-                "name": product["name"],
-                "code": code,
-                "url": product["url"],
-            })
+        if is_already_notified(memory, code):
+            print(f"    ⏭️  Ya notificado, se omite.")
+            continue
 
-        browser.close()
+        mark_as_notified(memory, code, name)
+        new_out_of_stock.append({"name": name, "code": code, "url": url})
 
     save_memory(memory)
 
-    print(f"\n📣 Nuevos sin stock para notificar: {len(new_out_of_stock)}")
+    print(f"\n📣 Nuevos sin stock: {len(new_out_of_stock)}")
     if new_out_of_stock:
         send_webhook(new_out_of_stock)
 
-    send_heartbeat(
-        total_checked=len(products),
-        new_out_of_stock=len(new_out_of_stock),
-    )
+    send_heartbeat(total=len(raw_products), new_oos=len(new_out_of_stock))
     print("✅ Bot finalizado.")
 
 
 if __name__ == "__main__":
     main()
-
