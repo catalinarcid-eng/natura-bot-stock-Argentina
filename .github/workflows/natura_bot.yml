@@ -27,9 +27,14 @@ jobs:
       - name: Instalar dependencias Python
         run: pip install -r requirements.txt
 
-      # 4. Playwright (solo Chromium para ahorrar espacio)
+    # 4. Playwright (solo Chromium para ahorrar espacio)
       - name: Instalar Chromium (Playwright)
-        run: sudo apt-get install -y libasound2t64 && python -m playwright install --with-deps chromium
+        run: |
+          sudo ln -s /usr/lib/x86_64-linux-gnu/libasound.so.2 /usr/lib/x86_64-linux-gnu/libasound.so.2.0.0 || true
+          sudo apt-get install -y libgstreamer1.0-0 libgstreamer-plugins-base1.0-0 || true
+          pip install playwright==1.44.0
+          python -m playwright install chromium
+          python -m playwright install-deps chromium || true
       # 5. Restaurar memoria desde cache (persiste entre runs)
       - name: Restaurar memoria de productos notificados
         uses: actions/cache@v4
