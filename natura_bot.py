@@ -7,6 +7,8 @@ import requests
 import os
 import re
 import json
+import csv
+import io
 from datetime import datetime, timedelta
 
 # ─── Configuración ───────────────────────────────────────────────────────────
@@ -47,21 +49,38 @@ def marcar_notificado(memoria: dict, codigo: str, nombre: str):
 # ─── Webhook ─────────────────────────────────────────────────────────────────
 
 def enviar_webhook(productos: list):
+    """Envía un mensaje por cada producto sin stock (simple y directo)."""
     if not productos:
         return
-    BLOQUE = 20
+
+    # Mensaje resumen inicial
+    now = datetime.now().strftime("%d/%m/%Y %H:%M")
+    texto_intro = (
+        f"🚨 ALERTA STOCK NATURA ARGENTINA [{now}]\n"
+        f"Se encontraron {len(productos)} productos SIN STOCK nuevos:\n"
+        + "─" * 40
+    )
+    try:
+        requests.post(WEBHOOK_URL, json={"text": texto_intro}, timeout=15)
+        time.sleep(0.5)
+    except Exception as e:
+        print(f"❌ Error intro: {e}")
+
+    # Mandar de a bloques de 15 productos como texto plano
+    BLOQUE = 15
     total_bloques = (len(productos) + BLOQUE - 1) // BLOQUE
+
     for i in range(0, len(productos), BLOQUE):
         bloque = productos[i:i + BLOQUE]
         num = (i // BLOQUE) + 1
-        lineas = [f"🚨 *Productos SIN STOCK en Natura Argentina* ({num}/{total_bloques}):\n"]
+        lineas = [f"📋 Lista {num}/{total_bloques}:"]
         for p in bloque:
-            lineas.append(f"• *{p['nombre']}*\n  Código: {p['codigo']}")
+            lineas.append(f"{p['codigo']} | {p['nombre']}")
         payload = {"text": "\n".join(lineas)}
         try:
             r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
             r.raise_for_status()
-            print(f"✅ Bloque {num}/{total_bloques} enviado ({len(bloque)} productos).")
+            print(f"✅ Bloque {num}/{total_bloques} enviado.")
         except Exception as e:
             print(f"❌ Error bloque {num}: {e}")
         time.sleep(1)
@@ -69,7 +88,7 @@ def enviar_webhook(productos: list):
 def enviar_resumen(total: int, nuevos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
     payload = {"text": (
-        f"✅ *Chequeo Natura Argentina completado* [{now}]\n"
+        f"✅ Chequeo Natura Argentina completado [{now}]\n"
         f"Productos revisados: {total}\n"
         f"Nuevos sin stock notificados: {nuevos}"
     )}
@@ -135,7 +154,6 @@ def escanear_argentina(driver) -> list:
 
     print(f"✅ Todos los productos cargados ({clics} clics).")
     soup = BeautifulSoup(driver.page_source, "html.parser")
-
     sin_stock = []
 
     for h4 in soup.find_all("h4"):
@@ -175,7 +193,6 @@ def escanear_argentina(driver) -> list:
                 nombre = "Producto sin nombre"
 
             codigo = obtener_sku_desde_url(href)
-
             sin_stock.append({
                 "nombre": nombre,
                 "codigo": codigo,
