@@ -176,7 +176,7 @@ def main():
     new_out_of_stock = []
 
     with sync_playwright() as p:
-      browser = p.chromium.launch(
+        browser = p.chromium.launch(
             headless=True,
             args=[
                 "--disable-blink-features=AutomationControlled",
@@ -244,3 +244,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
