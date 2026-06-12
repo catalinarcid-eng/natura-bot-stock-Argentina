@@ -7,6 +7,7 @@ import requests
 import os
 import re
 import json
+import csv
 from datetime import datetime, timedelta
 
 # ─── Configuración ───────────────────────────────────────────────────────────
@@ -17,6 +18,8 @@ WEBHOOK_URL = (
     "&token=YJVj-JROo0NRKnHP0QvIbve3aTVxE700D4wICDzAZb0"
 )
 MEMORIA_FILE = "memoria.json"
+CSV_FILE = "sin_stock.csv"
+REPO = "catalinarcid-eng/natura-bot-stock-Argentina"
 MEMORIA_TTL_DIAS = 7
 
 # ─── Memoria ─────────────────────────────────────────────────────────────────
@@ -50,6 +53,18 @@ def ya_notificado(memoria: dict, codigo: str) -> bool:
 def marcar_notificado(memoria: dict, codigo: str, nombre: str):
     memoria[codigo] = {"nombre": nombre, "fecha": datetime.now().isoformat()}
 
+# ─── CSV ─────────────────────────────────────────────────────────────────────
+
+def guardar_csv(productos: list):
+    """Guarda todos los productos sin stock en un CSV."""
+    with open(CSV_FILE, "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Codigo", "Nombre", "URL", "Fecha"])
+        fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
+        for p in productos:
+            writer.writerow([p["codigo"], p["nombre"], p["url"], fecha])
+    print(f"📄 CSV guardado: {CSV_FILE} ({len(productos)} productos)")
+
 # ─── Webhook ─────────────────────────────────────────────────────────────────
 
 def enviar_webhook(productos: list):
@@ -57,38 +72,24 @@ def enviar_webhook(productos: list):
         return
 
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
-    texto_intro = (
-        f"ALERTA STOCK NATURA ARGENTINA [{now}]\n"
-        f"Se encontraron {len(productos)} productos SIN STOCK nuevos:"
+    link_csv = f"https://raw.githubusercontent.com/{REPO}/main/{CSV_FILE}"
+
+    texto = (
+        f"🚨 ALERTA STOCK NATURA ARGENTINA [{now}]\n"
+        f"Se encontraron {len(productos)} productos SIN STOCK nuevos.\n\n"
+        f"📄 Descargar lista completa (CSV):\n{link_csv}"
     )
     try:
-        requests.post(WEBHOOK_URL, json={"text": texto_intro}, timeout=15)
-        time.sleep(0.5)
+        r = requests.post(WEBHOOK_URL, json={"text": texto}, timeout=15)
+        r.raise_for_status()
+        print(f"✅ Webhook enviado.")
     except Exception as e:
-        print(f"error: {e}")
-
-    BLOQUE = 15
-    total_bloques = (len(productos) + BLOQUE - 1) // BLOQUE
-
-    for i in range(0, len(productos), BLOQUE):
-        bloque = productos[i:i + BLOQUE]
-        num = (i // BLOQUE) + 1
-        lineas = [f"Lista {num}/{total_bloques}:"]
-        for p in bloque:
-            lineas.append(f"{p['codigo']} | {p['nombre']}")
-        payload = {"text": "\n".join(lineas)}
-        try:
-            r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
-            r.raise_for_status()
-            print(f"Bloque {num}/{total_bloques} enviado.")
-        except Exception as e:
-            print(f"Error bloque {num}: {e}")
-        time.sleep(1)
+        print(f"❌ Error webhook: {e}")
 
 def enviar_resumen(total: int, nuevos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
     payload = {"text": (
-        f"Chequeo Natura Argentina completado [{now}]\n"
+        f"✅ Chequeo Natura Argentina completado [{now}]\n"
         f"Productos revisados: {total}\n"
         f"Nuevos sin stock notificados: {nuevos}"
     )}
@@ -96,7 +97,7 @@ def enviar_resumen(total: int, nuevos: int):
         r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
         r.raise_for_status()
     except Exception as e:
-        print(f"Error resumen: {e}")
+        print(f"❌ Error resumen: {e}")
 
 # ─── Selenium ────────────────────────────────────────────────────────────────
 
@@ -133,11 +134,11 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
         if match:
             return match.group(1).strip()
     except Exception as e:
-        print(f"  Error obteniendo SKU de {url}: {e}")
+        print(f"    ⚠️  Error obteniendo SKU de {url}: {e}")
     return "cod. No detectado"
 
 def escanear_argentina(driver) -> list:
-    print(f"Cargando {URL_ARGENTINA} ...")
+    print(f"🌐 Cargando {URL_ARGENTINA} ...")
     driver.get(URL_ARGENTINA)
     time.sleep(8)
 
@@ -152,7 +153,7 @@ def escanear_argentina(driver) -> list:
         except:
             break
 
-    print(f"Todos los productos cargados ({clics} clics).")
+    print(f"✅ Todos los productos cargados ({clics} clics).")
     soup = BeautifulSoup(driver.page_source, "html.parser")
     sin_stock = []
 
@@ -201,16 +202,16 @@ def escanear_argentina(driver) -> list:
             })
 
         except Exception as e:
-            print(f"Error procesando producto: {e}")
+            print(f"  ⚠️  Error procesando producto: {e}")
 
-    print(f"📦 Productos sin stock encontrados: {len(sin_stock)}")
+    print(f"Productos sin stock encontrados: {len(sin_stock)}")
     return sin_stock
 
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 60)
-    print(f"Bot Stock- {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    print(f"Bot stock - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print("=" * 60)
 
     memoria = cargar_memoria()
@@ -233,7 +234,7 @@ def main():
             print(f"  • {nombre} | {codigo}")
 
             if ya_notificado(memoria, codigo):
-                print(f"    ⏭️  Ya notificado, se omite.")
+                print(f"   Ya notificado, se omite.")
                 continue
 
             marcar_notificado(memoria, codigo, nombre)
@@ -244,12 +245,16 @@ def main():
 
     guardar_memoria(memoria)
 
-    print(f"\n Nuevos sin stock: {len(nuevos_sin_stock)}")
+    # Siempre guardar CSV con TODOS los sin stock actuales (no solo nuevos)
+    if sin_stock:
+        guardar_csv(sin_stock)
+
+    print(f"\n📣 Nuevos sin stock: {len(nuevos_sin_stock)}")
     if nuevos_sin_stock:
         enviar_webhook(nuevos_sin_stock)
 
     enviar_resumen(total=len(sin_stock), nuevos=len(nuevos_sin_stock))
-    print("fin.")
+    print("Bot finalizado.")
 
 
 if __name__ == "__main__":
