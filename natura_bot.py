@@ -75,21 +75,21 @@ def enviar_webhook(productos: list):
     link_csv = f"https://raw.githubusercontent.com/{REPO}/main/{CSV_FILE}"
 
     texto = (
-        f"🚨 ALERTA STOCK NATURA ARGENTINA [{now}]\n"
+        f"Quiebre de stock natura [{now}]\n"
         f"Se encontraron {len(productos)} productos SIN STOCK nuevos.\n\n"
-        f"📄 Descargar lista completa (CSV):\n{link_csv}"
+        f"Ver lista completa (CSV):\n{link_csv}"
     )
     try:
         r = requests.post(WEBHOOK_URL, json={"text": texto}, timeout=15)
         r.raise_for_status()
-        print(f"✅ Webhook enviado.")
+        print(f"Webhook enviado.")
     except Exception as e:
-        print(f"❌ Error webhook: {e}")
+        print(f"Error webhook: {e}")
 
 def enviar_resumen(total: int, nuevos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
     payload = {"text": (
-        f"✅ Chequeo Natura Argentina completado [{now}]\n"
+        f" Lectura completaa [{now}]\n"
         f"Productos revisados: {total}\n"
         f"Nuevos sin stock notificados: {nuevos}"
     )}
@@ -97,7 +97,7 @@ def enviar_resumen(total: int, nuevos: int):
         r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
         r.raise_for_status()
     except Exception as e:
-        print(f"❌ Error resumen: {e}")
+        print(f"Error resumen: {e}")
 
 # ─── Selenium ────────────────────────────────────────────────────────────────
 
@@ -134,7 +134,7 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
         if match:
             return match.group(1).strip()
     except Exception as e:
-        print(f"    ⚠️  Error obteniendo SKU de {url}: {e}")
+        print(f"  Error obteniendo SKU de {url}: {e}")
     return "cod. No detectado"
 
 def escanear_argentina(driver) -> list:
