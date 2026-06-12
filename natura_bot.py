@@ -7,8 +7,6 @@ import requests
 import os
 import re
 import json
-import csv
-import io
 from datetime import datetime, timedelta
 
 # ─── Configuración ───────────────────────────────────────────────────────────
@@ -26,8 +24,14 @@ MEMORIA_TTL_DIAS = 7
 def cargar_memoria() -> dict:
     if not os.path.exists(MEMORIA_FILE):
         return {}
-    with open(MEMORIA_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(MEMORIA_FILE, "r", encoding="utf-8") as f:
+            contenido = f.read().strip()
+            if not contenido:
+                return {}
+            return json.loads(contenido)
+    except Exception:
+        return {}
 
 def guardar_memoria(memoria: dict):
     with open(MEMORIA_FILE, "w", encoding="utf-8") as f:
@@ -49,46 +53,42 @@ def marcar_notificado(memoria: dict, codigo: str, nombre: str):
 # ─── Webhook ─────────────────────────────────────────────────────────────────
 
 def enviar_webhook(productos: list):
-    """Envía un mensaje por cada producto sin stock (simple y directo)."""
     if not productos:
         return
 
-    # Mensaje resumen inicial
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
     texto_intro = (
-        f"🚨 ALERTA STOCK NATURA ARGENTINA [{now}]\n"
-        f"Se encontraron {len(productos)} productos SIN STOCK nuevos:\n"
-        + "─" * 40
+        f"ALERTA STOCK NATURA ARGENTINA [{now}]\n"
+        f"Se encontraron {len(productos)} productos SIN STOCK nuevos:"
     )
     try:
         requests.post(WEBHOOK_URL, json={"text": texto_intro}, timeout=15)
         time.sleep(0.5)
     except Exception as e:
-        print(f"❌ Error intro: {e}")
+        print(f"error: {e}")
 
-    # Mandar de a bloques de 15 productos como texto plano
     BLOQUE = 15
     total_bloques = (len(productos) + BLOQUE - 1) // BLOQUE
 
     for i in range(0, len(productos), BLOQUE):
         bloque = productos[i:i + BLOQUE]
         num = (i // BLOQUE) + 1
-        lineas = [f"📋 Lista {num}/{total_bloques}:"]
+        lineas = [f"Lista {num}/{total_bloques}:"]
         for p in bloque:
             lineas.append(f"{p['codigo']} | {p['nombre']}")
         payload = {"text": "\n".join(lineas)}
         try:
             r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
             r.raise_for_status()
-            print(f"✅ Bloque {num}/{total_bloques} enviado.")
+            print(f"Bloque {num}/{total_bloques} enviado.")
         except Exception as e:
-            print(f"❌ Error bloque {num}: {e}")
+            print(f"Error bloque {num}: {e}")
         time.sleep(1)
 
 def enviar_resumen(total: int, nuevos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
     payload = {"text": (
-        f"✅ Chequeo Natura Argentina completado [{now}]\n"
+        f"Chequeo Natura Argentina completado [{now}]\n"
         f"Productos revisados: {total}\n"
         f"Nuevos sin stock notificados: {nuevos}"
     )}
@@ -96,7 +96,7 @@ def enviar_resumen(total: int, nuevos: int):
         r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
         r.raise_for_status()
     except Exception as e:
-        print(f"❌ Error resumen: {e}")
+        print(f"Error resumen: {e}")
 
 # ─── Selenium ────────────────────────────────────────────────────────────────
 
@@ -133,11 +133,11 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
         if match:
             return match.group(1).strip()
     except Exception as e:
-        print(f"    ⚠️  Error obteniendo SKU de {url}: {e}")
+        print(f"  Error obteniendo SKU de {url}: {e}")
     return "cod. No detectado"
 
 def escanear_argentina(driver) -> list:
-    print(f"🌐 Cargando {URL_ARGENTINA} ...")
+    print(f"Cargando {URL_ARGENTINA} ...")
     driver.get(URL_ARGENTINA)
     time.sleep(8)
 
@@ -152,7 +152,7 @@ def escanear_argentina(driver) -> list:
         except:
             break
 
-    print(f"✅ Todos los productos cargados ({clics} clics).")
+    print(f"Todos los productos cargados ({clics} clics).")
     soup = BeautifulSoup(driver.page_source, "html.parser")
     sin_stock = []
 
@@ -201,7 +201,7 @@ def escanear_argentina(driver) -> list:
             })
 
         except Exception as e:
-            print(f"  ⚠️  Error procesando producto: {e}")
+            print(f"Error procesando producto: {e}")
 
     print(f"📦 Productos sin stock encontrados: {len(sin_stock)}")
     return sin_stock
@@ -210,7 +210,7 @@ def escanear_argentina(driver) -> list:
 
 def main():
     print("=" * 60)
-    print(f"🤖 Natura Stock Bot Argentina - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    print(f"Bot Stock- {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print("=" * 60)
 
     memoria = cargar_memoria()
@@ -244,12 +244,12 @@ def main():
 
     guardar_memoria(memoria)
 
-    print(f"\n📣 Nuevos sin stock: {len(nuevos_sin_stock)}")
+    print(f"\n Nuevos sin stock: {len(nuevos_sin_stock)}")
     if nuevos_sin_stock:
         enviar_webhook(nuevos_sin_stock)
 
     enviar_resumen(total=len(sin_stock), nuevos=len(nuevos_sin_stock))
-    print("✅ Bot finalizado.")
+    print("fin.")
 
 
 if __name__ == "__main__":
