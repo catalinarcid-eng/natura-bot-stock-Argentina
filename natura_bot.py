@@ -130,7 +130,7 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
             if texto.lower().startswith("cod."):
                 return texto
         texto_pagina = soup.get_text(separator=" ")
-        match = re.search(r'(cod\.\s*NAT[A-Z]+-\d+)', texto_pagina, re.IGNORECASE)
+        match = re.search(r'(s*NAT[A-Z]+-\d+)', texto_pagina, re.IGNORECASE)
         if match:
             return match.group(1).strip()
     except Exception as e:
@@ -138,7 +138,7 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
     return "cod. No detectado"
 
 def escanear_argentina(driver) -> list:
-    print(f"🌐 Cargando {URL_ARGENTINA} ...")
+    print(f"Cargando {URL_ARGENTINA} ...")
     driver.get(URL_ARGENTINA)
     time.sleep(8)
 
