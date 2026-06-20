@@ -1,12 +1,4 @@
 {
-  "cod. NATARG-134723": {
-    "nombre": "Repuesto Crema Antiseñales​ 70+​ Día",
-    "fecha": "2026-06-13T08:46:46.751550"
-  },
-  "cod. NATARG-78902": {
-    "nombre": "Shampoo Antioleosidad Homem 300ml",
-    "fecha": "2026-06-13T08:46:46.751742"
-  },
   "cod. NATURE-3": {
     "nombre": "Jabones en Barra Naturé 3 unidades de 90 g c/u",
     "fecha": "2026-06-13T15:27:54.641829"
@@ -782,5 +774,9 @@
   "cod. NATARG-73343": {
     "nombre": "Repuesto Acondicionador Anticaída Patauá Ekos 300ml",
     "fecha": "2026-06-19T20:33:29.382900"
+  },
+  "cod. NATARG-78902": {
+    "nombre": "Shampoo Antioleosidad Homem 300ml",
+    "fecha": "2026-06-20T15:31:50.259561"
   }
 }
