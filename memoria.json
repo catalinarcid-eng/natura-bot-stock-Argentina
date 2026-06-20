@@ -1,8 +1,4 @@
 {
-  "cod. NATURE-3": {
-    "nombre": "Jabones en Barra Naturé 3 unidades de 90 g c/u",
-    "fecha": "2026-06-13T15:27:54.641829"
-  },
   "cod. NATARG-131492": {
     "nombre": "Eau de Toilette Masculino Humor Conexion 75ml",
     "fecha": "2026-06-14T17:08:44.654686"
@@ -778,5 +774,9 @@
   "cod. NATARG-78902": {
     "nombre": "Shampoo Antioleosidad Homem 300ml",
     "fecha": "2026-06-20T15:31:50.259561"
+  },
+  "cod. NATARG-116583": {
+    "nombre": "Eau de Toilette Femenino Luna Absoluta 75ml",
+    "fecha": "2026-06-20T22:02:49.447873"
   }
 }
