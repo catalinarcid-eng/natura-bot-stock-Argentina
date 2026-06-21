@@ -1,12 +1,4 @@
 {
-  "cod. NATARG-170152": {
-    "nombre": "Desodorante en Spray Corporal Perfumado Transforma 100 ml",
-    "fecha": "2026-06-14T22:08:02.373080"
-  },
-  "cod. NATARG-129908": {
-    "nombre": "Desodorante Roll On Antitranspirante Prebiótico Tododia Leche de Algodón 70 ml",
-    "fecha": "2026-06-14T22:08:02.373100"
-  },
   "cod. NATARG-20709": {
     "nombre": "Bálsamo regenerador labial cereza y avellana Tododia",
     "fecha": "2026-06-15T18:17:04.999060"
@@ -778,5 +770,17 @@
   "cod. NATARG-131492": {
     "nombre": "Eau de Toilette Masculino Humor Conexion 75ml",
     "fecha": "2026-06-21T17:18:53.386989"
+  },
+  "cod. NATARG-69654": {
+    "nombre": "Desodorante Roll On Kaiak Clásico Femenino 75 ml",
+    "fecha": "2026-06-21T22:44:51.022257"
+  },
+  "cod. NATARG-129908": {
+    "nombre": "Desodorante Roll On Antitranspirante Prebiótico Tododia Leche de Algodón 70 ml",
+    "fecha": "2026-06-21T22:44:51.022269"
+  },
+  "cod. NATARG-148162": {
+    "nombre": "Repuesto Shampoo Definición y Hidratación Lumina 300ml",
+    "fecha": "2026-06-21T22:44:51.022274"
   }
 }
