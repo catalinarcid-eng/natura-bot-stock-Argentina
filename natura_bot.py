@@ -9,7 +9,7 @@ import re
 import json
 from datetime import datetime, timedelta, timezone
 
-# Zona horaria de Argentina (UTC-3, sin horario de verano desde 2009)  deberia de mandar la que corresponde
+# Zona horaria de Argentina (UTC-3, sin horario de verano desde 2009)
 TZ_ARGENTINA = timezone(timedelta(hours=-3))
 
 def ahora_argentina() -> datetime:
@@ -105,13 +105,13 @@ def guardar_json_para_sheets(productos_con_estado: list):
     with open(SHEETS_JSON_FILE, "w", encoding="utf-8") as f:
         json.dump(datos, f, ensure_ascii=False, indent=2)
 
-    print(f"📄 JSON para Sheets guardado: {SHEETS_JSON_FILE} ({len(datos['productos'])} producto(s))")
+    print(f"JSON para Sheets guardado: {SHEETS_JSON_FILE} ({len(datos['productos'])} producto(s))")
 
 # ─── Webhook Google Chat (resumen corto) ────────────────────────────────────
 
 def enviar_resumen_chat(total: int, nuevos: int):
     now = ahora_argentina().strftime("%d/%m/%Y %H:%M")
-    link_sheet = "👉 Revisá el detalle completo en la Google Sheet."
+    link_sheet = "Revisá el detalle completo en la Google Sheet."
     payload = {"text": (
         f"Chequeo Natura Argentina completado [{now}]\n"
         f"Productos sin stock: {total}\n"
@@ -122,7 +122,7 @@ def enviar_resumen_chat(total: int, nuevos: int):
         r = requests.post(WEBHOOK_CHAT_URL, json=payload, timeout=15)
         r.raise_for_status()
     except Exception as e:
-        print(f"❌ Error resumen chat: {e}")
+        print(f"Error resumen chat: {e}")
 
 # ─── Selenium ────────────────────────────────────────────────────────────────
 
@@ -142,8 +142,8 @@ def crear_driver():
 def obtener_sku_desde_url(url: str) -> str:
     match = re.search(r'(NAT[A-Z]+-\d+)', url, re.IGNORECASE)
     if match:
-        return f"cod. {match.group(1).upper()}"
-    return "cod. No detectado"
+        return match.group(1).upper()
+    return "No detectado"
 
 def obtener_sku_desde_pagina(driver, url: str) -> str:
     try:
@@ -153,17 +153,17 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
         for p in soup.find_all("p"):
             texto = p.get_text(strip=True)
             if texto.lower().startswith("cod."):
-                return texto
+                return texto.split(".", 1)[1].strip()
         texto_pagina = soup.get_text(separator=" ")
-        match = re.search(r'(cod\.\s*NAT[A-Z]+-\d+)', texto_pagina, re.IGNORECASE)
+        match = re.search(r'(NAT[A-Z]+-\d+)', texto_pagina, re.IGNORECASE)
         if match:
-            return match.group(1).strip()
+            return match.group(1).upper()
     except Exception as e:
-        print(f"    ⚠️  Error obteniendo SKU de {url}: {e}")
-    return "cod. No detectado"
+        print(f"     Error obteniendo SKU de {url}: {e}")
+    return "No detectado"
 
 def escanear_argentina(driver) -> list:
-    print(f"🌐 Cargando {URL_ARGENTINA} ...")
+    print(f"Cargando {URL_ARGENTINA} ...")
     driver.get(URL_ARGENTINA)
     time.sleep(8)
 
@@ -173,12 +173,12 @@ def escanear_argentina(driver) -> list:
             boton = driver.find_element(By.CSS_SELECTOR, '[data-testid="product-list-load-more"]')
             driver.execute_script("arguments[0].click();", boton)
             clics += 1
-            print(f"  → Clic {clics} en 'explorar más resultados'...")
+            print(f"  Clic {clics} en 'explorar más resultados'...")
             time.sleep(3)
         except:
             break
 
-    print(f"✅ Todos los productos cargados ({clics} clics).")
+    print(f"Todos los productos cargados ({clics} clics).")
     soup = BeautifulSoup(driver.page_source, "html.parser")
     sin_stock = []
 
@@ -223,20 +223,20 @@ def escanear_argentina(driver) -> list:
                 "nombre": nombre,
                 "codigo": codigo,
                 "url": href,
-                "necesita_visita": codigo == "cod. No detectado",
+                "necesita_visita": codigo == "No detectado",
             })
 
         except Exception as e:
-            print(f"  ⚠️  Error procesando producto: {e}")
+            print(f"   Error procesando producto: {e}")
 
-    print(f"📦 Productos sin stock encontrados: {len(sin_stock)}")
+    print(f"Productos sin stock encontrados: {len(sin_stock)}")
     return sin_stock
 
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 60)
-    print(f" Natura Stock - {ahora_argentina().strftime('%d/%m/%Y %H:%M:%S')}")
+    print(f"Natura Stock Bot Argentina - {ahora_argentina().strftime('%d/%m/%Y %H:%M:%S')}")
     print("=" * 60)
 
     memoria = cargar_memoria()
@@ -251,14 +251,14 @@ def main():
         print(f"\nVerificando memoria para {len(sin_stock)} productos sin stock...")
         for producto in sin_stock:
             if producto["necesita_visita"]:
-                print(f"  → Visitando ficha: {producto['nombre']}")
+                print(f"  Visitando ficha: {producto['nombre']}")
                 producto["codigo"] = obtener_sku_desde_pagina(driver, producto["url"])
 
             codigo = producto["codigo"]
             nombre = producto["nombre"]
 
             es_nuevo = not ya_notificado(memoria, codigo)
-            print(f"  • {nombre} | {codigo} | {'NUEVO' if es_nuevo else 'ya visto'}")
+            print(f"  {nombre} | {codigo} | {'NUEVO' if es_nuevo else 'ya visto'}")
 
             if es_nuevo:
                 marcar_notificado(memoria, codigo, nombre)
@@ -279,7 +279,7 @@ def main():
 
     nuevos_count = sum(1 for p in productos_para_sheet if p["es_nuevo"])
 
-    print(f"\n Total sin stock: {len(productos_para_sheet)} | Nuevos: {nuevos_count}")
+    print(f"\nTotal sin stock: {len(productos_para_sheet)} | Nuevos: {nuevos_count}")
 
     if productos_para_sheet:
         guardar_json_para_sheets(productos_para_sheet)
@@ -287,7 +287,7 @@ def main():
         guardar_json_para_sheets([])
 
     enviar_resumen_chat(total=len(productos_para_sheet), nuevos=nuevos_count)
-    print("finalizado.")
+    print("Bot finalizado.")
 
 
 if __name__ == "__main__":
