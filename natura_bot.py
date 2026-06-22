@@ -7,7 +7,14 @@ import requests
 import os
 import re
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
+# Zona horaria de Argentina (UTC-3, sin horario de verano desde 2009)  deberia de mandar la que corresponde
+TZ_ARGENTINA = timezone(timedelta(hours=-3))
+
+def ahora_argentina() -> datetime:
+    """Devuelve la fecha y hora actual en horario de Argentina."""
+    return datetime.now(TZ_ARGENTINA)
 
 # ─── Configuración ───────────────────────────────────────────────────────────
 URL_ARGENTINA = "https://www.naturacosmeticos.com.ar/c/todos-productos"
@@ -47,17 +54,26 @@ def guardar_memoria(memoria: dict):
         json.dump(memoria, f, ensure_ascii=False, indent=2)
 
 def limpiar_viejos(memoria: dict) -> dict:
-    corte = datetime.now() - timedelta(days=MEMORIA_TTL_DIAS)
-    return {
-        k: v for k, v in memoria.items()
-        if datetime.fromisoformat(v["fecha"]) > corte
-    }
+    corte = ahora_argentina() - timedelta(days=MEMORIA_TTL_DIAS)
+    resultado = {}
+    for k, v in memoria.items():
+        try:
+            fecha = datetime.fromisoformat(v["fecha"])
+            # Si la fecha guardada no tiene timezone (formato viejo), asumimos Argentina
+            if fecha.tzinfo is None:
+                fecha = fecha.replace(tzinfo=TZ_ARGENTINA)
+            if fecha > corte:
+                resultado[k] = v
+        except Exception:
+            # Si no se puede parsear, la descartamos para evitar errores
+            continue
+    return resultado
 
 def ya_notificado(memoria: dict, codigo: str) -> bool:
     return codigo in memoria
 
 def marcar_notificado(memoria: dict, codigo: str, nombre: str):
-    memoria[codigo] = {"nombre": nombre, "fecha": datetime.now().isoformat()}
+    memoria[codigo] = {"nombre": nombre, "fecha": ahora_argentina().isoformat()}
 
 # ─── Google Sheets (via Apps Script) ────────────────────────────────────────
 
@@ -69,9 +85,9 @@ def guardar_json_para_sheets(productos_con_estado: list):
     """
     if not productos_con_estado:
         # Igual escribimos un JSON vacío para que Apps Script no falle
-        datos = {"productos": [], "fecha_generado": datetime.now().isoformat()}
+        datos = {"productos": [], "fecha_generado": ahora_argentina().isoformat()}
     else:
-        fecha_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        fecha_hora = ahora_argentina().strftime("%d/%m/%Y %H:%M:%S")
         datos = {
             "productos": [
                 {
@@ -83,7 +99,7 @@ def guardar_json_para_sheets(productos_con_estado: list):
                 }
                 for p in productos_con_estado
             ],
-            "fecha_generado": datetime.now().isoformat(),
+            "fecha_generado": ahora_argentina().isoformat(),
         }
 
     with open(SHEETS_JSON_FILE, "w", encoding="utf-8") as f:
@@ -94,10 +110,10 @@ def guardar_json_para_sheets(productos_con_estado: list):
 # ─── Webhook Google Chat (resumen corto) ────────────────────────────────────
 
 def enviar_resumen_chat(total: int, nuevos: int):
-    now = datetime.now().strftime("%d/%m/%Y %H:%M")
+    now = ahora_argentina().strftime("%d/%m/%Y %H:%M")
     link_sheet = "👉 Revisá el detalle completo en la Google Sheet."
     payload = {"text": (
-        f"✅ Chequeo Natura Argentina completado [{now}]\n"
+        f"Chequeo Natura Argentina completado [{now}]\n"
         f"Productos sin stock: {total}\n"
         f"Nuevos detectados: {nuevos}\n"
         f"{link_sheet}"
@@ -220,7 +236,7 @@ def escanear_argentina(driver) -> list:
 
 def main():
     print("=" * 60)
-    print(f"🤖 Natura Stock Bot Argentina - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    print(f" Natura Stock - {ahora_argentina().strftime('%d/%m/%Y %H:%M:%S')}")
     print("=" * 60)
 
     memoria = cargar_memoria()
@@ -232,7 +248,7 @@ def main():
         sin_stock = escanear_argentina(driver)
         productos_para_sheet = []
 
-        print(f"\n🔍 Verificando memoria para {len(sin_stock)} productos sin stock...")
+        print(f"\nVerificando memoria para {len(sin_stock)} productos sin stock...")
         for producto in sin_stock:
             if producto["necesita_visita"]:
                 print(f"  → Visitando ficha: {producto['nombre']}")
@@ -263,7 +279,7 @@ def main():
 
     nuevos_count = sum(1 for p in productos_para_sheet if p["es_nuevo"])
 
-    print(f"\n📣 Total sin stock: {len(productos_para_sheet)} | Nuevos: {nuevos_count}")
+    print(f"\n Total sin stock: {len(productos_para_sheet)} | Nuevos: {nuevos_count}")
 
     if productos_para_sheet:
         guardar_json_para_sheets(productos_para_sheet)
@@ -271,7 +287,7 @@ def main():
         guardar_json_para_sheets([])
 
     enviar_resumen_chat(total=len(productos_para_sheet), nuevos=nuevos_count)
-    print("✅ Bot finalizado.")
+    print("finalizado.")
 
 
 if __name__ == "__main__":
