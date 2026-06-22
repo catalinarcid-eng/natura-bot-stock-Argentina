@@ -30,12 +30,12 @@ jobs:
       - name: Ejecutar bot
         run: python natura_bot.py
 
-      - name: Guardar memoria y CSV en el repositorio
+      - name: Guardar memoria y JSON en el repositorio
         if: always()
         run: |
           git config --global user.name "NaturaStockBot"
           git config --global user.email "bot@natura.internal"
-          git add memoria.json sin_stock.csv || true
+          git add memoria.json sin_stock_sheets.json || true
           if git diff --staged --quiet; then
             echo "Sin cambios para guardar."
           else
