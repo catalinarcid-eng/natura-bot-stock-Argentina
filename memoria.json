@@ -1,2 +1,846 @@
 {
+  "NATARG-117800": {
+    "nombre": "Body splash Acerola e Hibisco Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.365665-03:00"
+  },
+  "NATARG-105350": {
+    "nombre": "Eau de Toilette Masculino Humor On-line 75ml",
+    "fecha": "2026-06-22T16:51:41.365682-03:00"
+  },
+  "NATARG-163721": {
+    "nombre": "Mini Body splash Acerola e Hibisco Tododia 60ml",
+    "fecha": "2026-06-22T16:51:41.365686-03:00"
+  },
+  "NATARG-132967": {
+    "nombre": "Eau de Toilette Femenino Humor da Minha vida 75ml",
+    "fecha": "2026-06-22T16:51:41.365689-03:00"
+  },
+  "NATARG-206": {
+    "nombre": "Eau de Toilette Masculino Paz e Humor 25ml",
+    "fecha": "2026-06-22T16:51:41.365692-03:00"
+  },
+  "NATARG-174171": {
+    "nombre": "Frescor Açaí Eau de Toilette Ekos 75ml",
+    "fecha": "2026-06-22T16:51:41.365696-03:00"
+  },
+  "NATARG-42064": {
+    "nombre": "Eau de Toilette Femenino Kriska Clásico 100ml",
+    "fecha": "2026-06-22T16:51:41.365700-03:00"
+  },
+  "NATARG-166350": {
+    "nombre": "Mascarilla Exfoliante Faces 50 ml",
+    "fecha": "2026-06-22T16:51:41.365703-03:00"
+  },
+  "NATARG-150079": {
+    "nombre": "Set de Cuadernos Creer para Ver",
+    "fecha": "2026-06-22T16:51:41.365706-03:00"
+  },
+  "NATARG-125365": {
+    "nombre": "Shampoo Refrescante para barba y cabello Homem Elo 200ml",
+    "fecha": "2026-06-22T16:51:41.365708-03:00"
+  },
+  "NATARG-133339": {
+    "nombre": "Balm Post Barba Humor Beijo de Humor 75 ml",
+    "fecha": "2026-06-22T16:51:41.365711-03:00"
+  },
+  "NATARG-00034": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.365714-03:00"
+  },
+  "NATARG-92567": {
+    "nombre": "Lápiz Pro Labial Una 1,14 g",
+    "fecha": "2026-06-22T16:51:41.365720-03:00"
+  },
+  "NATARG-148195": {
+    "nombre": "Necessaire Playa",
+    "fecha": "2026-06-22T16:51:41.365725-03:00"
+  },
+  "NATARG-74094": {
+    "nombre": "Crema para Peinar Selladora de Cuticulas Cabello Seco Lumina 250ml",
+    "fecha": "2026-06-22T16:51:41.365727-03:00"
+  },
+  "NATARG-126941": {
+    "nombre": "Mascara De Blindaje Brillo Y Proteccion Del Color Lumina 220 ml",
+    "fecha": "2026-06-22T16:51:41.365730-03:00"
+  },
+  "NATARG-92551": {
+    "nombre": "Lápiz Pro Labial Una 1,14 g",
+    "fecha": "2026-06-22T16:51:41.365733-03:00"
+  },
+  "NATARG-126867": {
+    "nombre": "Spray Renovador Lumina 150ml",
+    "fecha": "2026-06-22T16:51:41.365736-03:00"
+  },
+  "NATARG-74096": {
+    "nombre": "Fluido Matizador Multibeneficios Lumina 150ml",
+    "fecha": "2026-06-22T16:51:41.365741-03:00"
+  },
+  "NATARG-215285": {
+    "nombre": "Kit Humor A Dois: Eau De Toilette 25ml + Jabón",
+    "fecha": "2026-06-22T16:51:41.365743-03:00"
+  },
+  "NATARG-231312": {
+    "nombre": "Kit Tododia Mora y Flor de Durazno",
+    "fecha": "2026-06-22T16:51:41.365746-03:00"
+  },
+  "NATARG-186": {
+    "nombre": "Eau de Parfum Masculino Homem Cor.Agio 100ml",
+    "fecha": "2026-06-22T16:51:41.365748-03:00"
+  },
+  "NATARG-116583": {
+    "nombre": "Eau de Toilette Femenino Luna Absoluta 75ml",
+    "fecha": "2026-06-22T16:51:41.365752-03:00"
+  },
+  "NATARG-162095": {
+    "nombre": "Body splash Limón Siciliano y Flor de Gardenia Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.365754-03:00"
+  },
+  "NATARG-174170": {
+    "nombre": "Jabón en Barra Puro Vegetal Ilía Secreto 90 g",
+    "fecha": "2026-06-22T16:51:41.365759-03:00"
+  },
+  "NATARG-92806": {
+    "nombre": "Loción Hidratante Relajante Mamá y Bebé 200 ml",
+    "fecha": "2026-06-22T16:51:41.365762-03:00"
+  },
+  "NATARG-148162": {
+    "nombre": "Repuesto Shampoo Definición y Hidratación Lumina 300ml",
+    "fecha": "2026-06-22T16:51:41.365765-03:00"
+  },
+  "NATARG-131492": {
+    "nombre": "Eau de Toilette Masculino Humor Conexion 75ml",
+    "fecha": "2026-06-22T16:51:41.365767-03:00"
+  },
+  "NATARG-1897": {
+    "nombre": "Eau de Parfum Femenino Beijo de Humor 75ml",
+    "fecha": "2026-06-22T16:51:41.365770-03:00"
+  },
+  "NATARG-106132": {
+    "nombre": "Repuesto Sombra Una 2 g",
+    "fecha": "2026-06-22T16:51:41.365772-03:00"
+  },
+  "NATARG-118442": {
+    "nombre": "Body splash Humor liberta 200ml",
+    "fecha": "2026-06-22T16:51:41.365775-03:00"
+  },
+  "NATARG-134694": {
+    "nombre": "Repuesto Crema Antiseñales​ 80+ Día",
+    "fecha": "2026-06-22T16:51:41.365778-03:00"
+  },
+  "NATARG-100679": {
+    "nombre": "Body splash Ciruela y Flor de Vainilla Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.365781-03:00"
+  },
+  "NATARG-108636": {
+    "nombre": "Sérum Intensivo Lifting y Firmeza Chronos Derma 30 ml",
+    "fecha": "2026-06-22T16:51:41.365784-03:00"
+  },
+  "NATARG-2825": {
+    "nombre": "Repuesto Crema Nutritiva Tododia Frutas Rojas 400 ml",
+    "fecha": "2026-06-22T16:51:41.365788-03:00"
+  },
+  "NATARG-2819": {
+    "nombre": "Repuesto Crema Nutritiva Tododia Frambuesa y Pimienta Rosa 400 ml",
+    "fecha": "2026-06-22T16:51:41.365793-03:00"
+  },
+  "NATARG-1921": {
+    "nombre": "Eau de Toilette Masculino Beijo de Humor 75ml",
+    "fecha": "2026-06-22T16:51:41.365796-03:00"
+  },
+  "NATARG-134589": {
+    "nombre": "Repuesto Crema Antiseñales 45+ Noche",
+    "fecha": "2026-06-22T16:51:41.365798-03:00"
+  },
+  "NATARG-120614": {
+    "nombre": "Eau de Toilette Masculino Kaiak Ultra 100ml",
+    "fecha": "2026-06-22T16:51:41.365801-03:00"
+  },
+  "NATARG-203": {
+    "nombre": "Eau de Parfum Femenino Humor Meu Primero 25ml",
+    "fecha": "2026-06-22T16:51:41.365803-03:00"
+  },
+  "NATARG-122122": {
+    "nombre": "Corrector Cobertura Extrema Una 8 ml",
+    "fecha": "2026-06-22T16:51:41.365806-03:00"
+  },
+  "NATARG-2830": {
+    "nombre": "Jabones en barra puro vegetal",
+    "fecha": "2026-06-22T16:51:41.365809-03:00"
+  },
+  "NATARG-59363": {
+    "nombre": "Espuma Limpieza Suave Chronos",
+    "fecha": "2026-06-22T16:51:41.365811-03:00"
+  },
+  "NATARG-169170": {
+    "nombre": "Eau de Parfum Masculino Essencial Supreme 100ml",
+    "fecha": "2026-06-22T16:51:41.365814-03:00"
+  },
+  "NATARG-122499": {
+    "nombre": "óleo fortalecedor finalizador Ekos Patauá 60 ml",
+    "fecha": "2026-06-22T16:51:41.365817-03:00"
+  },
+  "NATARG-163718": {
+    "nombre": "Crema Nutritiva Tododia Limón Siciliano y Flor de Gardenia 80 ml",
+    "fecha": "2026-06-22T16:51:41.365820-03:00"
+  },
+  "NATARG-181013": {
+    "nombre": "Body splash Manzana caramelizada y vainilla Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.365822-03:00"
+  },
+  "NATARG-96735": {
+    "nombre": "Súper Sérum Reductor de Arrugas Chronos Derma 30 ml",
+    "fecha": "2026-06-22T16:51:41.365827-03:00"
+  },
+  "NATARG-110271": {
+    "nombre": "Trío de perfumes miniatura Essencial masculino oud vainilla - oud - oud pimienta -  3 x 25 ml",
+    "fecha": "2026-06-22T16:51:41.365830-03:00"
+  },
+  "NATARG-58003": {
+    "nombre": "Repuesto Antiseñales 60+ Noche",
+    "fecha": "2026-06-22T16:51:41.365833-03:00"
+  },
+  "NATARG-69059": {
+    "nombre": "Agua Micelar Purificante Chronos",
+    "fecha": "2026-06-22T16:51:41.365835-03:00"
+  },
+  "NATARG-155856": {
+    "nombre": "Jabón Líquido Corporal Tododia Frutas Rojas 400ml",
+    "fecha": "2026-06-22T16:51:41.365838-03:00"
+  },
+  "NATARG-132682": {
+    "nombre": "Néctar para manos maracuyá naturaleza de los sueños Ekos",
+    "fecha": "2026-06-22T16:51:41.365840-03:00"
+  },
+  "NATARG-134724": {
+    "nombre": "Crema Nutritiva Tododia Lichia y Flor de Casis 200 ml",
+    "fecha": "2026-06-22T16:51:41.365843-03:00"
+  },
+  "NATARG-15811": {
+    "nombre": "Jabones en barra Sr.N",
+    "fecha": "2026-06-22T16:51:41.365872-03:00"
+  },
+  "NATARG-59364": {
+    "nombre": "Exfoliante antiseñales",
+    "fecha": "2026-06-22T16:51:41.365879-03:00"
+  },
+  "NATARG-151705": {
+    "nombre": "Mini Chubby Matte Faces 1,2 g",
+    "fecha": "2026-06-22T16:51:41.365882-03:00"
+  },
+  "NATARG-167185": {
+    "nombre": "Labial Multimix Cremoso Faces Vermelho Hot 3,5 g",
+    "fecha": "2026-06-22T16:51:41.365884-03:00"
+  },
+  "NATARG-116188": {
+    "nombre": "Labial Multimix Cremoso Faces 3,5 g",
+    "fecha": "2026-06-22T16:51:41.365887-03:00"
+  },
+  "NATARG-12179": {
+    "nombre": "Labial Matte Faces 3,5 g",
+    "fecha": "2026-06-22T16:51:41.365891-03:00"
+  },
+  "NATARG-138467": {
+    "nombre": "Delineador en Fibra para Ojos Una 1 ml",
+    "fecha": "2026-06-22T16:51:41.365894-03:00"
+  },
+  "NATARG-15820": {
+    "nombre": "Esmalte 3D Gel Una 8 ml",
+    "fecha": "2026-06-22T16:51:41.365897-03:00"
+  },
+  "NATARG-75242": {
+    "nombre": "Rubor Intense Me Una 6 g",
+    "fecha": "2026-06-22T16:51:41.365899-03:00"
+  },
+  "NATARG-8882": {
+    "nombre": "Polvo Compacto Matte Faces 6,5 g",
+    "fecha": "2026-06-22T16:51:41.365902-03:00"
+  },
+  "NATARG-91821": {
+    "nombre": "Hidratante Facial Piel Mixta a Oleosa Faces 50 ml",
+    "fecha": "2026-06-22T16:51:41.365906-03:00"
+  },
+  "NATARG-92799": {
+    "nombre": "Toallitas de Limpieza MM&BB Sin Fragancia 50 unidades",
+    "fecha": "2026-06-22T16:51:41.365909-03:00"
+  },
+  "NATARG-23083": {
+    "nombre": "Crema Nutritiva Tododia Frutas Rojas 200 ml",
+    "fecha": "2026-06-22T16:51:41.365911-03:00"
+  },
+  "NATARG-110181": {
+    "nombre": "Base Sérum Nude Me Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.365914-03:00"
+  },
+  "NATARG-80976": {
+    "nombre": "Crema para Masajes Ekos Andiroba 100g",
+    "fecha": "2026-06-22T16:51:41.365917-03:00"
+  },
+  "NATARG-00046": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.365919-03:00"
+  },
+  "NATARG-132558": {
+    "nombre": "Crema Nutritiva Flor de Lis 400 ml",
+    "fecha": "2026-06-22T16:51:41.365924-03:00"
+  },
+  "NATARG-166351": {
+    "nombre": "Gel Secativo de Granos Faces 15 g",
+    "fecha": "2026-06-22T16:51:41.365927-03:00"
+  },
+  "NATARG-16266": {
+    "nombre": "Shampoo en Barra uso diario Biome 90g",
+    "fecha": "2026-06-22T16:51:41.365929-03:00"
+  },
+  "NATURA-774": {
+    "nombre": "Vela Perfumada Natura 774 Rosa Capitiú 170 g",
+    "fecha": "2026-06-22T16:51:41.365932-03:00"
+  },
+  "NATARG-12189": {
+    "nombre": "Labial Matte Faces 3,5 g",
+    "fecha": "2026-06-22T16:51:41.365935-03:00"
+  },
+  "NATARG-139801": {
+    "nombre": "Oleo hidratante corporal Bothanica origins 190 ml",
+    "fecha": "2026-06-22T16:51:41.365938-03:00"
+  },
+  "NATARG-00093": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.365942-03:00"
+  },
+  "NATARG-2788": {
+    "nombre": "Crema Nutritiva Tododia Dátiles y Canela 400 ml",
+    "fecha": "2026-06-22T16:51:41.365945-03:00"
+  },
+  "NATARG-172416": {
+    "nombre": "Labial Líquido Súper Brillo Faces 3,5 g",
+    "fecha": "2026-06-22T16:51:41.365948-03:00"
+  },
+  "NATARG-132667": {
+    "nombre": "Sombra Líquida Fix Una 4 g",
+    "fecha": "2026-06-22T16:51:41.365951-03:00"
+  },
+  "NATARG-00033": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.365954-03:00"
+  },
+  "NATARG-137956": {
+    "nombre": "Sombra Mono Metalizada Faces 1,5 g",
+    "fecha": "2026-06-22T16:51:41.365958-03:00"
+  },
+  "NATARG-106122": {
+    "nombre": "Máscara Alargamiento Infinito a Prueba de Agua Una 8 ml",
+    "fecha": "2026-06-22T16:51:41.365961-03:00"
+  },
+  "NATARG-148406": {
+    "nombre": "Repuesto Máscara Definición y Hidratación Lumina 250ml",
+    "fecha": "2026-06-22T16:51:41.365963-03:00"
+  },
+  "NATARG-21454": {
+    "nombre": "Iluminador Marmolizado de Cuerpo y Rostro Una 3,5 g",
+    "fecha": "2026-06-22T16:51:41.365966-03:00"
+  },
+  "NATARG-69050": {
+    "nombre": "Protector Aclarador FPS 50+ Chronos Derma 50 ml",
+    "fecha": "2026-06-22T16:51:41.365969-03:00"
+  },
+  "NATARG-8848": {
+    "nombre": "Polvo Compacto Matte Faces 6,5 g",
+    "fecha": "2026-06-22T16:51:41.365972-03:00"
+  },
+  "NATARG-92595": {
+    "nombre": "Repuesto Rubor Intense Me Una 6 g",
+    "fecha": "2026-06-22T16:51:41.365975-03:00"
+  },
+  "NATARG-108132": {
+    "nombre": "Base Matte Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.365977-03:00"
+  },
+  "NATARG-108150": {
+    "nombre": "Base Matte Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.365980-03:00"
+  },
+  "NATARG-121492": {
+    "nombre": "Acondicionador en Barra Biome 75g",
+    "fecha": "2026-06-22T16:51:41.365983-03:00"
+  },
+  "NATARG-170970": {
+    "nombre": "Eau de Toilette Masculino noche Sr. N nox 100ml",
+    "fecha": "2026-06-22T16:51:41.365985-03:00"
+  },
+  "NATARG-101035": {
+    "nombre": "Iluminador Dúo Súper Brillo Faces 2,5 g",
+    "fecha": "2026-06-22T16:51:41.365988-03:00"
+  },
+  "NATARG-122480": {
+    "nombre": "Pulpa hidratante corporal",
+    "fecha": "2026-06-22T16:51:41.365993-03:00"
+  },
+  "NATARG-151547": {
+    "nombre": "Bálsamo Post Afeitado Essencial Exclusivo 75 ml",
+    "fecha": "2026-06-22T16:51:41.365996-03:00"
+  },
+  "NATARG-00092": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.365998-03:00"
+  },
+  "NATARG-78902": {
+    "nombre": "Shampoo Antioleosidad Homem 300ml",
+    "fecha": "2026-06-22T16:51:41.366002-03:00"
+  },
+  "NATARG-78933": {
+    "nombre": "Hidratante Antiseñales Homem 40 g",
+    "fecha": "2026-06-22T16:51:41.366016-03:00"
+  },
+  "NATARG-10156": {
+    "nombre": "Lápiz para Cejas Faces 1,14 g",
+    "fecha": "2026-06-22T16:51:41.366023-03:00"
+  },
+  "NATARG-00019": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.366032-03:00"
+  },
+  "NATARG-00039": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.366038-03:00"
+  },
+  "NATARG-116195": {
+    "nombre": "Labial Multimix Cremoso Faces 3,5 g",
+    "fecha": "2026-06-22T16:51:41.366045-03:00"
+  },
+  "NATARG-154866": {
+    "nombre": "Shampoo Hidratación Manzana verde y Aloe Vera Tododia 300ml",
+    "fecha": "2026-06-22T16:51:41.366050-03:00"
+  },
+  "NATARG-197516": {
+    "nombre": "Miniatura Eau de Toilette Paz y Humor 25ml",
+    "fecha": "2026-06-22T16:51:41.366055-03:00"
+  },
+  "NATARG-150177": {
+    "nombre": "Esmalte 3D Gel Una 8 ml",
+    "fecha": "2026-06-22T16:51:41.366061-03:00"
+  },
+  "NATARG-91820": {
+    "nombre": "Hidratante Facial Piel Normal a Seca Faces 50 ml",
+    "fecha": "2026-06-22T16:51:41.366068-03:00"
+  },
+  "NATARG-134606": {
+    "nombre": "Tododia Flor de Manzana Body Splash 200 ml",
+    "fecha": "2026-06-22T16:51:41.366074-03:00"
+  },
+  "NATARG-134584": {
+    "nombre": "Crema Nutritiva para manos Tododia Uva Rosada y Granada 50ml",
+    "fecha": "2026-06-22T16:51:41.366078-03:00"
+  },
+  "NATARG-106540": {
+    "nombre": "Esmalte Faces Faces 6 ml",
+    "fecha": "2026-06-22T16:51:41.366084-03:00"
+  },
+  "NATARG-106548": {
+    "nombre": "Esmalte Faces azul Santiago 6ml",
+    "fecha": "2026-06-22T16:51:41.366090-03:00"
+  },
+  "NATARG-107555": {
+    "nombre": "Lápiz Retráctil para Cejas Una 250 mg",
+    "fecha": "2026-06-22T16:51:41.366095-03:00"
+  },
+  "NATARG-150181": {
+    "nombre": "Body splash Avellana y Casis Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.366100-03:00"
+  },
+  "NATARG-168988": {
+    "nombre": "Jabón Líquido Corporal Tododia Frambuesa y Pimienta Roja 300 ml",
+    "fecha": "2026-06-22T16:51:41.366105-03:00"
+  },
+  "NATURA-379": {
+    "nombre": "Perfume en aceite 379 Benjoim Cumaru 15ml",
+    "fecha": "2026-06-22T16:51:41.366110-03:00"
+  },
+  "NATARG-106130": {
+    "nombre": "Repuesto Sombra Una 2 g",
+    "fecha": "2026-06-22T16:51:41.366114-03:00"
+  },
+  "NATARG-108630": {
+    "nombre": "Crema Hidratante Corporal EkosTukuma 200ml",
+    "fecha": "2026-06-22T16:51:41.366119-03:00"
+  },
+  "NATARG-139237": {
+    "nombre": "Essencial Ato Eau De Parfum Masculino",
+    "fecha": "2026-06-22T16:51:41.366128-03:00"
+  },
+  "NATARG-000157": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.366133-03:00"
+  },
+  "NATARG-140915": {
+    "nombre": "Hidratante labial Ekos 10 mll",
+    "fecha": "2026-06-22T16:51:41.366138-03:00"
+  },
+  "NATARG-00014": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.366144-03:00"
+  },
+  "NATARG-163222": {
+    "nombre": "Esmalte Glitter Faces 6 ml",
+    "fecha": "2026-06-22T16:51:41.366152-03:00"
+  },
+  "NATARG-75493": {
+    "nombre": "Óleo Bifásico Corporal Ekos Tukumá 200 ml",
+    "fecha": "2026-06-22T16:51:41.366159-03:00"
+  },
+  "NATARG-134585": {
+    "nombre": "Repuesto Crema Antiseñales 45+ Día",
+    "fecha": "2026-06-22T16:51:41.366165-03:00"
+  },
+  "NATARG-148419": {
+    "nombre": "Spray Definición Intensa Lumina 150ml",
+    "fecha": "2026-06-22T16:51:41.366168-03:00"
+  },
+  "NATARG-2273": {
+    "nombre": "Válvula para colonias Aguas de Natura",
+    "fecha": "2026-06-22T16:51:41.366171-03:00"
+  },
+  "NATARG-27703": {
+    "nombre": "Lápiz Delineador Retráctil para Ojos a Prueba de Agua Una 280 mg",
+    "fecha": "2026-06-22T16:51:41.366174-03:00"
+  },
+  "NATARG-24865": {
+    "nombre": "Repuesto Iluminador Marmolizado de Cuerpo y Rostro Una 3,5 g",
+    "fecha": "2026-06-22T16:51:41.366177-03:00"
+  },
+  "NATARG-70389": {
+    "nombre": "Repuesto Jabón Líquido para Manos Ekos Castaña 250 ml",
+    "fecha": "2026-06-22T16:51:41.366182-03:00"
+  },
+  "NATARG-90176": {
+    "nombre": "Neutralizador de Espinillas Faces 10 g",
+    "fecha": "2026-06-22T16:51:41.366185-03:00"
+  },
+  "NATARG-138464": {
+    "nombre": "Delineador en Fibra para Ojos Una 1 ml",
+    "fecha": "2026-06-22T16:51:41.366188-03:00"
+  },
+  "NATARG-154873": {
+    "nombre": "Acondicionador Hidratación Manzana verde y Aloe Vera Tododia",
+    "fecha": "2026-06-22T16:51:41.366190-03:00"
+  },
+  "NATARG-170796": {
+    "nombre": "Body splash Flor de Durazno y Jazmin Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.366193-03:00"
+  },
+  "NATARG-106550": {
+    "nombre": "Esmalte Faces 6 ml",
+    "fecha": "2026-06-22T16:51:41.366198-03:00"
+  },
+  "NATARG-127766": {
+    "nombre": "Base Matte Powder Multifuncional Una 20 g",
+    "fecha": "2026-06-22T16:51:41.366200-03:00"
+  },
+  "NATARG-110184": {
+    "nombre": "Base Sérum Nude Me Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.366219-03:00"
+  },
+  "NATARG-70722": {
+    "nombre": "Maxi Paleta de Sombras 12 Tonos Nudes Una 11,2 g",
+    "fecha": "2026-06-22T16:51:41.366222-03:00"
+  },
+  "NATARG-106126": {
+    "nombre": "Repuesto Sombra Una 2 g",
+    "fecha": "2026-06-22T16:51:41.366225-03:00"
+  },
+  "NATARG-106139": {
+    "nombre": "Repuesto Sombra Una 2 g",
+    "fecha": "2026-06-22T16:51:41.366227-03:00"
+  },
+  "NATARG-107366": {
+    "nombre": "Labial Color Hidra FPS 8",
+    "fecha": "2026-06-22T16:51:41.366230-03:00"
+  },
+  "NATARG-16269": {
+    "nombre": "Jabón Biome Exfoliante en Barra 90g",
+    "fecha": "2026-06-22T16:51:41.366234-03:00"
+  },
+  "NATARG-170908": {
+    "nombre": "Crema Nutritiva para Manos Tododia Flor de Durazno y Jazmin 50 ml",
+    "fecha": "2026-06-22T16:51:41.366237-03:00"
+  },
+  "NATARG-139249": {
+    "nombre": "Vela Bothanica Aura Gingi 170 g",
+    "fecha": "2026-06-22T16:51:41.366249-03:00"
+  },
+  "NATARG-148192": {
+    "nombre": "Mini anotador",
+    "fecha": "2026-06-22T16:51:41.366255-03:00"
+  },
+  "NATARG-78932": {
+    "nombre": "Gel fijador para cabello Homem 100g",
+    "fecha": "2026-06-22T16:51:41.366260-03:00"
+  },
+  "NATARG-16528": {
+    "nombre": "Shampoo en Barra hidratante Biome 90g",
+    "fecha": "2026-06-22T16:51:41.366266-03:00"
+  },
+  "NATARG-148399": {
+    "nombre": "Repuesto Acondicionador Reconstrucción de Daños Extremos",
+    "fecha": "2026-06-22T16:51:41.366273-03:00"
+  },
+  "NATARG-126936": {
+    "nombre": "Shampoo Revitalizante Brillo Y Proteccion Del Color Lumina 300 ml",
+    "fecha": "2026-06-22T16:51:41.366277-03:00"
+  },
+  "NATARG-86954": {
+    "nombre": "Repuesto Mascara Regeneradora Lumina 250 ml",
+    "fecha": "2026-06-22T16:51:41.366279-03:00"
+  },
+  "NATARG-163224": {
+    "nombre": "Esmalte Glitter Faces 6 ml",
+    "fecha": "2026-06-22T16:51:41.366282-03:00"
+  },
+  "NATARG-92573": {
+    "nombre": "Lápiz Pro Labial Una 1,14 g",
+    "fecha": "2026-06-22T16:51:41.366285-03:00"
+  },
+  "NATARG-116403": {
+    "nombre": "Polvo Compacto Nude Me Una 10 g",
+    "fecha": "2026-06-22T16:51:41.366288-03:00"
+  },
+  "NATARG-32542": {
+    "nombre": "Mistureba Jabones en Barra Surtidos Naturé Caja con 4 x 90 g c/u",
+    "fecha": "2026-06-22T16:51:41.366293-03:00"
+  },
+  "NATARG-91192": {
+    "nombre": "Jabón Líquido Tododia Mango Rosa y Agua de Coco 300 ml",
+    "fecha": "2026-06-22T16:51:41.366296-03:00"
+  },
+  "NATARG-156235": {
+    "nombre": "Spray Hidratación Manzana verde y Aloe Vera Tododia 200ml",
+    "fecha": "2026-06-22T16:51:41.366298-03:00"
+  },
+  "NATARG-154871": {
+    "nombre": "Máscara Hidratación Manzana verde y Aloe Vera Tododia 250ml",
+    "fecha": "2026-06-22T16:51:41.366304-03:00"
+  },
+  "NATURA-861": {
+    "nombre": "Vela Perfumada Natura 861 Guaiaco Pataqueira 170 g",
+    "fecha": "2026-06-22T16:51:41.366306-03:00"
+  },
+  "NATARG-108135": {
+    "nombre": "Base Matte Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.366309-03:00"
+  },
+  "NATARG-23149": {
+    "nombre": "Crema Nutritiva Tododia Hojas de Limón y Guanábana 200 ml",
+    "fecha": "2026-06-22T16:51:41.366312-03:00"
+  },
+  "NATARG-140919": {
+    "nombre": "Pulpa hidratante corporal",
+    "fecha": "2026-06-22T16:51:41.366314-03:00"
+  },
+  "NATARG-173585": {
+    "nombre": "Repuesto Shampoo Hidratación Mora y Óleo de coco Tododia",
+    "fecha": "2026-06-22T16:51:41.366317-03:00"
+  },
+  "NATARG-125232": {
+    "nombre": "Hidratante Corporal Ekos Tukuma 400 ml",
+    "fecha": "2026-06-22T16:51:41.366320-03:00"
+  },
+  "NATARG-106534": {
+    "nombre": "Esmalte Faces 6 ml",
+    "fecha": "2026-06-22T16:51:41.366324-03:00"
+  },
+  "NATARG-73214": {
+    "nombre": "Crema de Masajes Ekos Andiroba 100 g",
+    "fecha": "2026-06-22T16:51:41.366336-03:00"
+  },
+  "NATARG-112892": {
+    "nombre": "Sérum nocturno Antidaños y Reconstrucción Murumuru Ekos 30ml",
+    "fecha": "2026-06-22T16:51:41.366345-03:00"
+  },
+  "NATARG-116404": {
+    "nombre": "Polvo Compacto Nude Me Una 10 g",
+    "fecha": "2026-06-22T16:51:41.366351-03:00"
+  },
+  "NATARG-150220": {
+    "nombre": "Hidratante Corporal Concentrado Ekos Castaña 30 ml",
+    "fecha": "2026-06-22T16:51:41.366356-03:00"
+  },
+  "NATARG-70721": {
+    "nombre": "Lápiz Kajal para Ojos Una 1,14 g",
+    "fecha": "2026-06-22T16:51:41.366362-03:00"
+  },
+  "NATARG-75239": {
+    "nombre": "Rubor Intense Me Una 6 g",
+    "fecha": "2026-06-22T16:51:41.366367-03:00"
+  },
+  "NATARG-75241": {
+    "nombre": "Rubor Intense Me Una 6 g",
+    "fecha": "2026-06-22T16:51:41.366375-03:00"
+  },
+  "NATARG-80691": {
+    "nombre": "Perfume para el Cabello Plant 30 ml",
+    "fecha": "2026-06-22T16:51:41.366381-03:00"
+  },
+  "NATARG-150176": {
+    "nombre": "Esmalte 3D Gel Una 8 ml",
+    "fecha": "2026-06-22T16:51:41.366386-03:00"
+  },
+  "NATARG-118042": {
+    "nombre": "Accesorio Bioresina Biome",
+    "fecha": "2026-06-22T16:51:41.366392-03:00"
+  },
+  "NATARG-104880": {
+    "nombre": "Repuesto Base Fluida HD Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.366397-03:00"
+  },
+  "NATARG-176406": {
+    "nombre": "Esencia para el Cabello Tododia Cereza y Avellana",
+    "fecha": "2026-06-22T16:51:41.366410-03:00"
+  },
+  "NATARG-9921": {
+    "nombre": "Lápiz para Ojos Faces 1,3 g",
+    "fecha": "2026-06-22T16:51:41.366417-03:00"
+  },
+  "NATARG-2827": {
+    "nombre": "Repuesto Crema Nutritiva Tododia Flor de Lis 400 ml",
+    "fecha": "2026-06-22T16:51:41.366423-03:00"
+  },
+  "NATARG-72178": {
+    "nombre": "Crema Nutritiva Para Manos Algodón Tododia",
+    "fecha": "2026-06-22T16:51:41.366428-03:00"
+  },
+  "NATARG-000059": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.366433-03:00"
+  },
+  "NATARG-74074": {
+    "nombre": "Shampoo Nutritivo Cabello Seco 300ml",
+    "fecha": "2026-06-22T16:51:41.366438-03:00"
+  },
+  "NATARG-145471": {
+    "nombre": "Jabones Monodosis para Manos Ekos Castaña 30 unidades de 500 mg c/u",
+    "fecha": "2026-06-22T16:51:41.366443-03:00"
+  },
+  "NATARG-92584": {
+    "nombre": "Repuesto Rubor Intense Me Una 6 g",
+    "fecha": "2026-06-22T16:51:41.366448-03:00"
+  },
+  "NATARG-22621": {
+    "nombre": "Eau de Toilette Copaiba Ekos 100ml",
+    "fecha": "2026-06-22T16:51:41.366452-03:00"
+  },
+  "NATARG-177713": {
+    "nombre": "Eau de Parfum Femenino Una Celebrar 50ml",
+    "fecha": "2026-06-22T16:51:41.366475-03:00"
+  },
+  "NATARG-127777": {
+    "nombre": "Base Matte Powder Multifuncional Una 20 g",
+    "fecha": "2026-06-22T16:51:41.366482-03:00"
+  },
+  "NATARG-155879": {
+    "nombre": "Labial Extremo Confort FPS 25 Satinado Una 3,8 g",
+    "fecha": "2026-06-22T16:51:41.366487-03:00"
+  },
+  "NATARG-15479": {
+    "nombre": "Esmalte 3D Gel Una 8 ml",
+    "fecha": "2026-06-22T16:51:41.366494-03:00"
+  },
+  "NATARG-97644": {
+    "nombre": "Base liquida mate Faces",
+    "fecha": "2026-06-22T16:51:41.366503-03:00"
+  },
+  "NATARG-92576": {
+    "nombre": "Repuesto Rubor Intense Me Una 6 g",
+    "fecha": "2026-06-22T16:51:41.366509-03:00"
+  },
+  "NATARG-10045": {
+    "nombre": "Lápiz Kajal Color Intenso Faces 1,3 g",
+    "fecha": "2026-06-22T16:51:41.366512-03:00"
+  },
+  "NATARG-107781": {
+    "nombre": "Eau de Toilette Masculino Kaiak Oceano 25ml",
+    "fecha": "2026-06-22T16:51:41.366515-03:00"
+  },
+  "NATARG-110190": {
+    "nombre": "Base Sérum Nude Me Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.366518-03:00"
+  },
+  "NATARG-110681": {
+    "nombre": "Repuesto Polvo Compacto Nude Me Una 10 g",
+    "fecha": "2026-06-22T16:51:41.366520-03:00"
+  },
+  "NATARG-115508": {
+    "nombre": "Jabón En Barra Puro Vegetal Kaiak 90 g",
+    "fecha": "2026-06-22T16:51:41.366523-03:00"
+  },
+  "NATARG-110680": {
+    "nombre": "Repuesto Polvo Compacto Nude Me Una 10 g",
+    "fecha": "2026-06-22T16:51:41.366526-03:00"
+  },
+  "NATARG-139238": {
+    "nombre": "Crema Hidratante para Manos Bothanica Ficus Herb 230 ml",
+    "fecha": "2026-06-22T16:51:41.366528-03:00"
+  },
+  "NATARG-139241": {
+    "nombre": "Jabón Líquido para Manos Bothanica Ficus Herb 230 ml",
+    "fecha": "2026-06-22T16:51:41.366531-03:00"
+  },
+  "NATARG-146890": {
+    "nombre": "Shampoo 3 en 1: cabello, cuerpo y barba Homem Coragio 125 ml",
+    "fecha": "2026-06-22T16:51:41.366534-03:00"
+  },
+  "NATARG-95773": {
+    "nombre": "Labial Matte Powder Una 3,4 g",
+    "fecha": "2026-06-22T16:51:41.366539-03:00"
+  },
+  "NATARG-107130": {
+    "nombre": "Corrector Cushion Nude Me Una 12 ml",
+    "fecha": "2026-06-22T16:51:41.366541-03:00"
+  },
+  "NATARG-170811": {
+    "nombre": "Jabón en Barra Puro Vegetal Ekos Madeira en Flor 100 g",
+    "fecha": "2026-06-22T16:51:41.366544-03:00"
+  },
+  "NATARG-73343": {
+    "nombre": "Repuesto Acondicionador Anticaída Patauá Ekos 300ml",
+    "fecha": "2026-06-22T16:51:41.366547-03:00"
+  },
+  "NATARG-58005": {
+    "nombre": "Repuesto Antiseñales 70+ Noche",
+    "fecha": "2026-06-22T16:51:41.366550-03:00"
+  },
+  "NATARG-121606": {
+    "nombre": "Acondicionador Antidaños y Reconstrucción Murumuru Ekos 30ml",
+    "fecha": "2026-06-22T16:51:41.366553-03:00"
+  },
+  "NATARG-8885": {
+    "nombre": "Polvo Compacto Matte Faces 6,5 g",
+    "fecha": "2026-06-22T16:51:41.366555-03:00"
+  },
+  "NATARG-191623": {
+    "nombre": "Base Líquida HD Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.366560-03:00"
+  },
+  "NATARG-108130": {
+    "nombre": "Base Matte Una 30 ml",
+    "fecha": "2026-06-22T16:51:41.366570-03:00"
+  },
+  "NATARG-00045": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T16:51:41.366575-03:00"
+  },
+  "NATARG-103998": {
+    "nombre": "Crema Nutritiva Para Manos Ciruela Y Flor De Vainilla Tododia",
+    "fecha": "2026-06-22T16:51:41.366580-03:00"
+  },
+  "NATARG-101037": {
+    "nombre": "Iluminador Dúo Súper Brillo Faces 2,5 g",
+    "fecha": "2026-06-22T16:51:41.366586-03:00"
+  },
+  "NATARG-105351": {
+    "nombre": "Eau de Toilette Femenino Humor On-line 75ml",
+    "fecha": "2026-06-22T16:51:41.366594-03:00"
+  },
+  "NATARG-139240": {
+    "nombre": "Jabón Líquido para Manos Bothanica Fructus Folium 230 ml",
+    "fecha": "2026-06-22T16:51:41.366599-03:00"
+  }
 }
