@@ -7,19 +7,25 @@ import requests
 import os
 import re
 import json
-import csv
 from datetime import datetime, timedelta
 
 # ─── Configuración ───────────────────────────────────────────────────────────
 URL_ARGENTINA = "https://www.naturacosmeticos.com.ar/c/todos-productos"
-WEBHOOK_URL = (
+
+# Webhook de Google Chat (resumen corto)
+WEBHOOK_CHAT_URL = (
     "https://chat.googleapis.com/v1/spaces/AAQAljBv4Y4/messages"
     "?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI"
     "&token=YJVj-JROo0NRKnHP0QvIbve3aTVxE700D4wICDzAZb0"
 )
+
+# URL de la Web App de Google Apps Script (ya no se usa en modo PULL)
+SHEETS_WEBHOOK_URL = "https://script.google.com/a/macros/natura.net/s/AKfycbwj0UEFbvAK4Zy-6Xm_guaa_ctMnS4pDB6Dx0ydfe9ylq7ozgDg5Q-33sHp-rtMxU6NYQ/exec"
+
+# Archivo JSON que Apps Script va a leer desde GitHub (modo PULL)
+SHEETS_JSON_FILE = "sin_stock_sheets.json"
+
 MEMORIA_FILE = "memoria.json"
-CSV_FILE = "sin_stock.csv"
-REPO = "catalinarcid-eng/natura-bot-stock-Argentina"
 MEMORIA_TTL_DIAS = 7
 
 # ─── Memoria ─────────────────────────────────────────────────────────────────
@@ -53,51 +59,54 @@ def ya_notificado(memoria: dict, codigo: str) -> bool:
 def marcar_notificado(memoria: dict, codigo: str, nombre: str):
     memoria[codigo] = {"nombre": nombre, "fecha": datetime.now().isoformat()}
 
-# ─── CSV ─────────────────────────────────────────────────────────────────────
+# ─── Google Sheets (via Apps Script) ────────────────────────────────────────
 
-def guardar_csv(productos: list):
-    """Guarda todos los productos sin stock en un CSV."""
-    with open(CSV_FILE, "w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.writer(f)
-        writer.writerow(["Codigo", "Nombre", "URL", "Fecha"])
-        fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
-        for p in productos:
-            writer.writerow([p["codigo"], p["nombre"], p["url"], fecha])
-    print(f"📄 CSV guardado: {CSV_FILE} ({len(productos)} productos)")
+def guardar_json_para_sheets(productos_con_estado: list):
+    """
+    Guarda un JSON en el repositorio con los productos sin stock.
+    Apps Script lo va a leer cada 3 horas desde GitHub (modo PULL),
+    así no hace falta exponer la Web App públicamente.
+    """
+    if not productos_con_estado:
+        # Igual escribimos un JSON vacío para que Apps Script no falle
+        datos = {"productos": [], "fecha_generado": datetime.now().isoformat()}
+    else:
+        fecha_hora = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        datos = {
+            "productos": [
+                {
+                    "codigo": p["codigo"],
+                    "nombre": p["nombre"],
+                    "fecha": fecha_hora,
+                    "es_nuevo": p["es_nuevo"],
+                    "url": p["url"],
+                }
+                for p in productos_con_estado
+            ],
+            "fecha_generado": datetime.now().isoformat(),
+        }
 
-# ─── Webhook ─────────────────────────────────────────────────────────────────
+    with open(SHEETS_JSON_FILE, "w", encoding="utf-8") as f:
+        json.dump(datos, f, ensure_ascii=False, indent=2)
 
-def enviar_webhook(productos: list):
-    if not productos:
-        return
+    print(f"📄 JSON para Sheets guardado: {SHEETS_JSON_FILE} ({len(datos['productos'])} producto(s))")
 
+# ─── Webhook Google Chat (resumen corto) ────────────────────────────────────
+
+def enviar_resumen_chat(total: int, nuevos: int):
     now = datetime.now().strftime("%d/%m/%Y %H:%M")
-    link_csv = f"https://raw.githubusercontent.com/{REPO}/main/{CSV_FILE}"
-
-    texto = (
-        f"Quiebre de stock natura [{now}]\n"
-        f"Se encontraron {len(productos)} productos SIN STOCK nuevos.\n\n"
-        f"Ver lista completa (CSV):\n{link_csv}"
-    )
-    try:
-        r = requests.post(WEBHOOK_URL, json={"text": texto}, timeout=15)
-        r.raise_for_status()
-        print(f"Webhook enviado.")
-    except Exception as e:
-        print(f"Error webhook: {e}")
-
-def enviar_resumen(total: int, nuevos: int):
-    now = datetime.now().strftime("%d/%m/%Y %H:%M")
+    link_sheet = "👉 Revisá el detalle completo en la Google Sheet."
     payload = {"text": (
-        f" Lectura completaa [{now}]\n"
-        f"Productos revisados: {total}\n"
-        f"Nuevos sin stock notificados: {nuevos}"
+        f"✅ Chequeo Natura Argentina completado [{now}]\n"
+        f"Productos sin stock: {total}\n"
+        f"Nuevos detectados: {nuevos}\n"
+        f"{link_sheet}"
     )}
     try:
-        r = requests.post(WEBHOOK_URL, json=payload, timeout=15)
+        r = requests.post(WEBHOOK_CHAT_URL, json=payload, timeout=15)
         r.raise_for_status()
     except Exception as e:
-        print(f"Error resumen: {e}")
+        print(f"❌ Error resumen chat: {e}")
 
 # ─── Selenium ────────────────────────────────────────────────────────────────
 
@@ -130,15 +139,15 @@ def obtener_sku_desde_pagina(driver, url: str) -> str:
             if texto.lower().startswith("cod."):
                 return texto
         texto_pagina = soup.get_text(separator=" ")
-        match = re.search(r'(s*NAT[A-Z]+-\d+)', texto_pagina, re.IGNORECASE)
+        match = re.search(r'(cod\.\s*NAT[A-Z]+-\d+)', texto_pagina, re.IGNORECASE)
         if match:
             return match.group(1).strip()
     except Exception as e:
-        print(f"  Error obteniendo SKU de {url}: {e}")
+        print(f"    ⚠️  Error obteniendo SKU de {url}: {e}")
     return "cod. No detectado"
 
 def escanear_argentina(driver) -> list:
-    print(f"Cargando {URL_ARGENTINA} ...")
+    print(f"🌐 Cargando {URL_ARGENTINA} ...")
     driver.get(URL_ARGENTINA)
     time.sleep(8)
 
@@ -204,14 +213,14 @@ def escanear_argentina(driver) -> list:
         except Exception as e:
             print(f"  ⚠️  Error procesando producto: {e}")
 
-    print(f"Productos sin stock encontrados: {len(sin_stock)}")
+    print(f"📦 Productos sin stock encontrados: {len(sin_stock)}")
     return sin_stock
 
 # ─── Main ────────────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 60)
-    print(f"Bot stock - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    print(f"🤖 Natura Stock Bot Argentina - {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
     print("=" * 60)
 
     memoria = cargar_memoria()
@@ -221,7 +230,7 @@ def main():
 
     try:
         sin_stock = escanear_argentina(driver)
-        nuevos_sin_stock = []
+        productos_para_sheet = []
 
         print(f"\n🔍 Verificando memoria para {len(sin_stock)} productos sin stock...")
         for producto in sin_stock:
@@ -231,30 +240,38 @@ def main():
 
             codigo = producto["codigo"]
             nombre = producto["nombre"]
-            print(f"  • {nombre} | {codigo}")
 
-            if ya_notificado(memoria, codigo):
-                print(f"   Ya notificado, se omite.")
-                continue
+            es_nuevo = not ya_notificado(memoria, codigo)
+            print(f"  • {nombre} | {codigo} | {'NUEVO' if es_nuevo else 'ya visto'}")
 
-            marcar_notificado(memoria, codigo, nombre)
-            nuevos_sin_stock.append(producto)
+            if es_nuevo:
+                marcar_notificado(memoria, codigo, nombre)
+
+            # Mandamos TODOS los productos sin stock a la Sheet,
+            # marcando si son nuevos en esta ejecución o no.
+            productos_para_sheet.append({
+                "codigo": codigo,
+                "nombre": nombre,
+                "url": producto["url"],
+                "es_nuevo": es_nuevo,
+            })
 
     finally:
         driver.quit()
 
     guardar_memoria(memoria)
 
-    # Siempre guardar CSV con TODOS los sin stock actuales (no solo nuevos)
-    if sin_stock:
-        guardar_csv(sin_stock)
+    nuevos_count = sum(1 for p in productos_para_sheet if p["es_nuevo"])
 
-    print(f"\n📣 Nuevos sin stock: {len(nuevos_sin_stock)}")
-    if nuevos_sin_stock:
-        enviar_webhook(nuevos_sin_stock)
+    print(f"\n📣 Total sin stock: {len(productos_para_sheet)} | Nuevos: {nuevos_count}")
 
-    enviar_resumen(total=len(sin_stock), nuevos=len(nuevos_sin_stock))
-    print("Bot finalizado.")
+    if productos_para_sheet:
+        guardar_json_para_sheets(productos_para_sheet)
+    else:
+        guardar_json_para_sheets([])
+
+    enviar_resumen_chat(total=len(productos_para_sheet), nuevos=nuevos_count)
+    print("✅ Bot finalizado.")
 
 
 if __name__ == "__main__":
