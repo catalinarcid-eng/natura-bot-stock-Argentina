@@ -1,36 +1,4 @@
 {
-  "cod. NATARG-20709": {
-    "nombre": "Bálsamo regenerador labial cereza y avellana Tododia",
-    "fecha": "2026-06-15T18:17:04.999060"
-  },
-  "cod. NATARG-96735": {
-    "nombre": "Súper Sérum Reductor de Arrugas Chronos Derma 30 ml",
-    "fecha": "2026-06-15T18:17:04.999097"
-  },
-  "cod. NATARG-109153": {
-    "nombre": "Sombras Mono Faces 1,5 g",
-    "fecha": "2026-06-15T18:17:04.999138"
-  },
-  "cod. NATARG-00093": {
-    "nombre": "Producto sin nombre",
-    "fecha": "2026-06-15T18:17:04.999141"
-  },
-  "cod. NATARG-163224": {
-    "nombre": "Esmalte Glitter Faces 6 ml",
-    "fecha": "2026-06-15T18:17:04.999144"
-  },
-  "cod. NATARG-138464": {
-    "nombre": "Delineador en Fibra para Ojos Una 1 ml",
-    "fecha": "2026-06-15T18:17:04.999286"
-  },
-  "cod. NATARG-125232": {
-    "nombre": "Hidratante Corporal Ekos Tukuma 400 ml",
-    "fecha": "2026-06-15T18:17:04.999340"
-  },
-  "cod. NATARG-000059": {
-    "nombre": "Producto sin nombre",
-    "fecha": "2026-06-15T18:17:04.999382"
-  },
   "cod. NATARG-186": {
     "nombre": "Eau de Parfum Masculino Homem Cor.Agio 100ml",
     "fecha": "2026-06-16T16:09:36.897621"
@@ -870,5 +838,29 @@
   "cod. NATARG-106132": {
     "nombre": "Repuesto Sombra Una 2 g",
     "fecha": "2026-06-22T18:03:38.704320"
+  },
+  "cod. NATARG-96735": {
+    "nombre": "Súper Sérum Reductor de Arrugas Chronos Derma 30 ml",
+    "fecha": "2026-06-22T19:32:13.005457"
+  },
+  "cod. NATARG-00093": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T19:32:13.005528"
+  },
+  "cod. NATARG-138464": {
+    "nombre": "Delineador en Fibra para Ojos Una 1 ml",
+    "fecha": "2026-06-22T19:32:13.005632"
+  },
+  "cod. NATARG-163224": {
+    "nombre": "Esmalte Glitter Faces 6 ml",
+    "fecha": "2026-06-22T19:32:13.005676"
+  },
+  "cod. NATARG-125232": {
+    "nombre": "Hidratante Corporal Ekos Tukuma 400 ml",
+    "fecha": "2026-06-22T19:32:13.005705"
+  },
+  "cod. NATARG-000059": {
+    "nombre": "Producto sin nombre",
+    "fecha": "2026-06-22T19:32:13.005744"
   }
 }
