@@ -168,7 +168,7 @@ def escanear_argentina(driver) -> list:
     time.sleep(8)
 
     clics = 0
-    while clics < 100:
+    while clics < 500:
         try:
             boton = driver.find_element(By.CSS_SELECTOR, '[data-testid="product-list-load-more"]')
             driver.execute_script("arguments[0].click();", boton)
