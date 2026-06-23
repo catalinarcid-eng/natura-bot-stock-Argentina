@@ -111,12 +111,12 @@ def guardar_json_para_sheets(productos_con_estado: list):
 
 def enviar_resumen_chat(total: int, nuevos: int):
     now = ahora_argentina().strftime("%d/%m/%Y %H:%M")
-    link_sheet = "Revisá el detalle completo en la Google Sheet."
+    link_sheet = "https://docs.google.com/spreadsheets/d/1i-5GCHWWvkJ9dgI8VLvfYlSnEwYWnWDmJhzUqD2oNhk/edit?gid=1697645646#gid=1697645646"
     payload = {"text": (
         f"Chequeo Natura Argentina completado [{now}]\n"
         f"Productos sin stock: {total}\n"
         f"Nuevos detectados: {nuevos}\n"
-        f"{link_sheet}"
+        f"Detalle: {link_sheet}"
     )}
     try:
         r = requests.post(WEBHOOK_CHAT_URL, json=payload, timeout=15)
